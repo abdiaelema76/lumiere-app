@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lumière — Your Life Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="light-mode">
+
+  <!-- Ambient background blobs -->
+  <div class="ambient-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">✦</span>
+      <span class="logo-text">Lumière</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-section="dashboard">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Dashboard</span>
+      </button>
+      <button class="nav-btn" data-section="notes">
+        <span class="nav-icon">◇</span>
+        <span class="nav-label">Notes</span>
+      </button>
+      <button class="nav-btn" data-section="planner">
+        <span class="nav-icon">◻</span>
+        <span class="nav-label">Planner</span>
+      </button>
+      <button class="nav-btn" data-section="journal">
+        <span class="nav-icon">◯</span>
+        <span class="nav-label">Journal</span>
+      </button>
+      <button class="nav-btn" data-section="focus">
+        <span class="nav-icon">◉</span>
+        <span class="nav-label">Focus</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
+        <span class="theme-icon">☽</span>
+      </button>
+      <div class="sidebar-date" id="sidebarDate"></div>
+    </div>
+  </aside>
+
+  <!-- Mobile top bar -->
+  <div class="mobile-topbar">
+    <button class="hamburger" id="hamburger">☰</button>
+    <span class="mobile-logo">✦ Lumière</span>
+    <button class="theme-toggle-mobile" id="themeToggleMobile">☽</button>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+
+    <!-- DASHBOARD SECTION -->
+    <section class="section active" id="section-dashboard">
+      <div class="section-header">
+        <h1 class="section-title">Good morning, love ✦</h1>
+        <p class="section-subtitle" id="dashboardDate"></p>
+      </div>
+
+      <div class="dashboard-grid">
+
+        <!-- Quote card -->
+        <div class="card quote-card">
+          <div class="quote-ornament">"</div>
+          <p class="quote-text" id="quoteText">Loading your daily inspiration...</p>
+          <span class="quote-author" id="quoteAuthor"></span>
+          <button class="btn-ghost refresh-quote" id="refreshQuote">New Quote ↻</button>
+        </div>
+
+        <!-- Progress card -->
+        <div class="card progress-card">
+          <h3 class="card-title">Today's Progress</h3>
+          <div class="progress-stat">
+            <span class="stat-label">Tasks completed</span>
+            <span class="stat-value" id="tasksCompletedStat">0 / 0</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar" id="dailyProgressBar" style="width:0%"></div>
+          </div>
+          <div class="progress-stat" style="margin-top:1rem">
+            <span class="stat-label">Focus time today</span>
+            <span class="stat-value" id="focusTimeStat">0 min</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar lavender-bar" id="focusProgressBar" style="width:0%"></div>
+          </div>
+        </div>
+
+        <!-- Weekly achievements -->
+        <div class="card achievements-card">
+          <h3 class="card-title">This Week ✨</h3>
+          <div class="achievements-grid" id="achievementsGrid">
+            <div class="achievement-item">
+              <span class="achievement-num" id="weekTasks">0</span>
+              <span class="achievement-label">Tasks Done</span>
+            </div>
+            <div class="achievement-item">
+              <span class="achievement-num" id="weekJournal">0</span>
+              <span class="achievement-label">Journal Entries</span>
+            </div>
+            <div class="achievement-item">
+              <span class="achievement-num" id="weekFocus">0</span>
+              <span class="achievement-label">Focus Hours</span>
+            </div>
+            <div class="achievement-item">
+              <span class="achievement-num" id="weekStreak">0</span>
+              <span class="achievement-label">Day Streak 🔥</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weekly motivation -->
+        <div class="card motivation-card">
+          <h3 class="card-title">Your Weekly Message 🌸</h3>
+          <p class="motivation-text" id="weeklyMotivation">Keep showing up. Every small act of discipline is a love letter to your future self.</p>
+        </div>
+
+        <!-- Weekly insights -->
+        <div class="card insights-card">
+          <h3 class="card-title">Gentle Insights 🪞</h3>
+          <div id="insightsList" class="insights-list">
+            <div class="insight-item positive">
+              <span class="insight-icon">✦</span>
+              <span>Start tracking your week to see personal insights here.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent tasks preview -->
+        <div class="card tasks-preview-card">
+          <h3 class="card-title">Today's Tasks</h3>
+          <div id="dashboardTasks" class="dashboard-tasks-list">
+            <p class="empty-hint">No tasks for today — head to Planner to add some 🌿</p>
+          </div>
+          <button class="btn-soft" onclick="app.navigate('planner')">Open Planner →</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- NOTES SECTION -->
+    <section class="section" id="section-notes">
+      <div class="section-header">
+        <h1 class="section-title">Notes ◇</h1>
+        <div class="header-actions">
+          <input type="text" class="search-input" id="notesSearch" placeholder="Search notes…" />
+          <button class="btn-primary" id="newNoteBtn">+ New Note</button>
+        </div>
+      </div>
+
+      <div class="notes-layout">
+        <div class="notes-sidebar">
+          <div class="notes-filter">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="pinned">Pinned</button>
+            <button class="filter-btn" data-filter="coding">Code</button>
+            <button class="filter-btn" data-filter="personal">Personal</button>
+            <button class="filter-btn" data-filter="work">Work</button>
+          </div>
+          <div class="notes-list" id="notesList"></div>
+        </div>
+        <div class="note-editor-panel" id="noteEditorPanel">
+          <div class="note-editor-empty" id="noteEditorEmpty">
+            <div class="empty-state-icon">◇</div>
+            <p>Select a note or create a new one</p>
+          </div>
+          <div class="note-editor-form hidden" id="noteEditorForm">
+            <div class="note-editor-toolbar">
+              <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Note title…" />
+              <div class="note-meta-row">
+                <select class="note-type-select" id="noteTypeSelect">
+                  <option value="personal">Personal</option>
+                  <option value="work">Work</option>
+                  <option value="study">Study</option>
+                  <option value="coding">Coding 💻</option>
+                  <option value="ideas">Ideas</option>
+                </select>
+                <button class="pin-btn" id="notePinBtn" title="Pin note">📌</button>
+                <button class="btn-ghost delete-btn" id="noteDeleteBtn">Delete</button>
+                <button class="btn-primary save-btn" id="noteSaveBtn">Save</button>
+              </div>
+            </div>
+            <!-- Regular editor -->
+            <div id="richEditorWrap">
+              <div class="rich-toolbar">
+                <button onclick="execCmd('bold')" title="Bold"><b>B</b></button>
+                <button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
+                <button onclick="execCmd('underline')" title="Underline"><u>U</u></button>
+                <button onclick="execCmd('insertUnorderedList')" title="List">≡</button>
+                <button onclick="execCmd('insertOrderedList')" title="Numbered">1.</button>
+                <button onclick="execCmd('formatBlock','h2')" title="Heading">H</button>
+              </div>
+              <div class="rich-editor" id="richEditor" contenteditable="true"></div>
+            </div>
+            <!-- Code editor -->
+            <div id="codeEditorWrap" class="hidden">
+              <div class="code-lang-bar">
+                <select id="codeLang">
+                  <option value="javascript">JavaScript</option>
+                  <option value="python">Python</option>
+                  <option value="html">HTML</option>
+                  <option value="css">CSS</option>
+                  <option value="other">Other</option>
+                </select>
+                <span class="code-hint">IDE Mode ✦</span>
+              </div>
+              <textarea class="code-editor" id="codeEditor" placeholder="// Write your code here…" spellcheck="false"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLANNER SECTION -->
+    <section class="section" id="section-planner">
+      <div class="section-header">
+        <h1 class="section-title">Planner ◻</h1>
+        <div class="header-actions">
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="day">Day</button>
+            <button class="view-btn" data-view="week">Week</button>
+          </div>
+          <button class="btn-primary" id="newTaskBtn">+ Add Task</button>
+        </div>
+      </div>
+
+      <!-- Task Form Modal -->
+      <div class="modal-overlay hidden" id="taskModal">
+        <div class="modal-card">
+          <h3 class="modal-title">New Task ✦</h3>
+          <input type="text" class="modal-input" id="taskTitleInput" placeholder="What do you need to do?" />
+          <div class="modal-row">
+            <select class="modal-select" id="taskCategory">
+              <option value="work">💼 Work</option>
+              <option value="study">📚 Study</option>
+              <option value="personal">🌸 Personal</option>
+              <option value="business">💡 Business</option>
+              <option value="fun">🎉 Fun</option>
+            </select>
+            <input type="date" class="modal-input" id="taskDate" />
+          </div>
+          <div class="modal-row">
+            <input type="time" class="modal-input" id="taskTime" placeholder="Time" />
+            <label class="reminder-label">
+              <input type="checkbox" id="taskReminder" /> Remind me
+            </label>
+          </div>
+          <div class="modal-actions">
+            <button class="btn-ghost" id="cancelTaskBtn">Cancel</button>
+            <button class="btn-primary" id="saveTaskBtn">Add Task</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day View -->
+      <div id="dayView" class="planner-view">
+        <div class="planner-day-header">
+          <button class="nav-arrow" id="prevDay">‹</button>
+          <h2 class="planner-day-title" id="plannerDayTitle"></h2>
+          <button class="nav-arrow" id="nextDay">›</button>
+        </div>
+        <div class="filter-row">
+          <button class="filter-chip active" data-cat="all">All</button>
+          <button class="filter-chip" data-cat="work">Work</button>
+          <button class="filter-chip" data-cat="study">Study</button>
+          <button class="filter-chip" data-cat="personal">Personal</button>
+          <button class="filter-chip" data-cat="fun">Fun</button>
+        </div>
+        <div class="tasks-list" id="dayTasksList"></div>
+      </div>
+
+      <!-- Week View -->
+      <div id="weekView" class="planner-view hidden">
+        <div class="week-grid" id="weekGrid"></div>
+      </div>
+    </section>
+
+    <!-- JOURNAL SECTION -->
+    <section class="section" id="section-journal">
+      <div class="section-header">
+        <h1 class="section-title">Journal ◯</h1>
+        <div class="header-actions">
+          <input type="text" class="search-input" id="journalSearch" placeholder="Search entries…" />
+          <button class="view-btn active" id="journalWriteTab">Write</button>
+          <button class="view-btn" id="journalCalendarTab">Calendar</button>
+          <button class="view-btn" id="journalAnalysisTab">Analysis</button>
+        </div>
+      </div>
+
+      <!-- Write tab -->
+      <div id="journalWriteView">
+        <div class="journal-card">
+          <div class="journal-date-row">
+            <span class="journal-today-label" id="journalTodayLabel"></span>
+            <div class="mood-selector" id="moodSelector">
+              <span class="mood-label">How are you feeling?</span>
+              <div class="mood-options">
+                <button class="mood-btn" data-mood="happy" title="Happy">😊</button>
+                <button class="mood-btn" data-mood="calm" title="Calm">😌</button>
+                <button class="mood-btn" data-mood="motivated" title="Motivated">🔥</button>
+                <button class="mood-btn" data-mood="tired" title="Tired">😴</button>
+                <button class="mood-btn" data-mood="stressed" title="Stressed">😰</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="prompts-row">
+            <span class="prompts-label">Writing prompts:</span>
+            <div class="prompts-list">
+              <button class="prompt-chip" onclick="insertPrompt('What did I achieve today?')">What did I achieve today?</button>
+              <button class="prompt-chip" onclick="insertPrompt('What can I improve tomorrow?')">What can I improve?</button>
+              <button class="prompt-chip" onclick="insertPrompt('What made me proud this week?')">What made me proud?</button>
+              <button class="prompt-chip" onclick="insertPrompt('What am I grateful for today?')">Grateful for…</button>
+            </div>
+          </div>
+
+          <textarea class="journal-textarea" id="journalTextarea" placeholder="Begin writing… this space is only for you 🌸"></textarea>
+
+          <div class="journal-actions">
+            <span class="word-count" id="journalWordCount">0 words</span>
+            <button class="btn-primary" id="saveJournalBtn">Save Entry ✦</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar tab -->
+      <div id="journalCalendarView" class="hidden">
+        <div class="journal-calendar" id="journalCalendar"></div>
+        <div class="journal-entry-preview" id="journalEntryPreview">
+          <p class="empty-hint">Select a date to read your entry.</p>
+        </div>
+      </div>
+
+      <!-- Analysis tab -->
+      <div id="journalAnalysisView" class="hidden">
+        <div class="analysis-card" id="journalAnalysisCard">
+          <h3 class="card-title">Weekly Journal Analysis 🪞</h3>
+          <div id="analysisContent">
+            <p class="empty-hint">Write at least 3 journal entries to unlock your weekly analysis.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOCUS SECTION -->
+    <section class="section" id="section-focus">
+      <div class="section-header">
+        <h1 class="section-title">Focus Mode ◉</h1>
+      </div>
+
+      <div class="focus-layout">
+        <div class="timer-card">
+          <div class="timer-mode-tabs">
+            <button class="timer-mode-btn active" data-mode="focus">Focus</button>
+            <button class="timer-mode-btn" data-mode="fun">Fun</button>
+            <button class="timer-mode-btn" data-mode="rest">Rest</button>
+          </div>
+
+          <div class="timer-display">
+            <svg class="timer-ring" viewBox="0 0 200 200">
+              <circle class="ring-bg" cx="100" cy="100" r="88" />
+              <circle class="ring-progress" id="timerRingProgress" cx="100" cy="100" r="88" />
+            </svg>
+            <div class="timer-center">
+              <span class="timer-time" id="timerDisplay">25:00</span>
+              <span class="timer-label" id="timerModeLabel">Focus</span>
+            </div>
+          </div>
+
+          <div class="timer-controls">
+            <button class="timer-btn" id="timerStart">▶ Start</button>
+            <button class="timer-btn secondary" id="timerReset">↺ Reset</button>
+          </div>
+
+          <div class="timer-settings">
+            <label class="timer-setting">
+              <span>Focus</span>
+              <input type="number" class="timer-input" id="focusDuration" value="25" min="1" max="120" /> min
+            </label>
+            <label class="timer-setting">
+              <span>Fun</span>
+              <input type="number" class="timer-input" id="funDuration" value="10" min="1" max="60" /> min
+            </label>
+            <label class="timer-setting">
+              <span>Rest</span>
+              <input type="number" class="timer-input" id="restDuration" value="5" min="1" max="30" /> min
+            </label>
+          </div>
+        </div>
+
+        <div class="focus-stats-panel">
+          <div class="card">
+            <h3 class="card-title">Today's Focus</h3>
+            <div class="focus-stat-row">
+              <span>Sessions completed</span>
+              <span class="stat-value" id="focusSessionsCount">0</span>
+            </div>
+            <div class="focus-stat-row">
+              <span>Total focus time</span>
+              <span class="stat-value" id="focusTotalTime">0 min</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 class="card-title">Session Log</h3>
+            <div class="session-log" id="sessionLog">
+              <p class="empty-hint">No sessions yet today.</p>
+            </div>
+          </div>
+
+          <div class="card focus-quote-card">
+            <p class="focus-quote" id="focusQuote">"Do the work. The universe rewards action."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Floating Quick Add -->
+  <button class="fab" id="fabBtn" title="Quick add">+</button>
+  <div class="fab-menu hidden" id="fabMenu">
+    <button class="fab-item" onclick="app.quickAdd('task')">📋 Task</button>
+    <button class="fab-item" onclick="app.quickAdd('note')">📝 Note</button>
+    <button class="fab-item" onclick="app.quickAdd('journal')">📖 Journal</button>
+  </div>
+
+  <!-- Global Search Overlay -->
+  <div class="search-overlay hidden" id="searchOverlay">
+    <div class="search-modal">
+      <input type="text" class="global-search-input" id="globalSearchInput" placeholder="Search everything… ✦" />
+      <div class="search-results" id="globalSearchResults"></div>
+      <button class="close-search" id="closeSearch">✕</button>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="dashboard.js"></script>
+  <script src="notes.js"></script>
+  <script src="planner.js"></script>
+  <script src="journal.js"></script>
+  <script src="focus.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
