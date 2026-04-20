@@ -1,26 +1,23 @@
 // ============================================================
-// LUMIÈRE — dashboard.js
+// LUMIÈRE — dashboard.js  (v3)
 // ============================================================
 
 const QUOTES = [
-  { text: "Discipline is choosing between what you want now and what you want most.", author: "Augusta F. Kantra" },
-  { text: "She remembered who she was and the game changed.", author: "Lalah Delia" },
-  { text: "You are allowed to be both a masterpiece and a work in progress.", author: "Sophia Bush" },
-  { text: "Small steps every day are building your future self.", author: "Lumière" },
-  { text: "You stayed consistent this week. That's your real glow.", author: "Lumière" },
-  { text: "The most powerful thing you can do is show up, even when you don't feel like it.", author: "Lumière" },
-  { text: "Your energy is sacred. Protect it. Direct it. Let it bloom.", author: "Lumière" },
-  { text: "Growth is not always visible. Trust the roots.", author: "Lumière" },
-  { text: "She was not the same. She had grown soft in the places that mattered.", author: "Lumière" },
-  { text: "One intentional hour is worth ten distracted ones.", author: "Lumière" },
-  { text: "Rest is not a reward. It is part of the process.", author: "Lumière" },
-  { text: "Consistency over perfection, always.", author: "Lumière" },
-  { text: "You don't have to be great to start, but you have to start to be great.", author: "Zig Ziglar" },
-  { text: "Believe you can and you're halfway there.", author: "Theodore Roosevelt" },
-  { text: "The woman who follows the crowd will usually go no further than the crowd. The woman who walks alone is likely to find herself in places no one has ever been before.", author: "Albert Einstein" },
+  { text:"Discipline is choosing between what you want now and what you want most.", author:"Augusta F. Kantra" },
+  { text:"She remembered who she was and the game changed.", author:"Lalah Delia" },
+  { text:"You are allowed to be both a masterpiece and a work in progress.", author:"Sophia Bush" },
+  { text:"Small steps every day are building your future self.", author:"Lumière" },
+  { text:"You stayed consistent this week. That's your real glow.", author:"Lumière" },
+  { text:"The most powerful thing you can do is show up, even when you don't feel like it.", author:"Lumière" },
+  { text:"Your energy is sacred. Protect it. Direct it. Let it bloom.", author:"Lumière" },
+  { text:"Growth is not always visible. Trust the roots.", author:"Lumière" },
+  { text:"One intentional hour is worth ten distracted ones.", author:"Lumière" },
+  { text:"Rest is not a reward. It is part of the process.", author:"Lumière" },
+  { text:"Consistency over perfection, always.", author:"Lumière" },
+  { text:"Do the work. The universe rewards action.", author:"Lumière" },
 ];
 
-const WEEKLY_MESSAGES = [
+const WEEKLY_MSGS = [
   "Keep showing up. Every small act of discipline is a love letter to your future self.",
   "You are doing better than you think. Be gentle with yourself.",
   "Consistency is a form of self-love. You are proving that to yourself.",
@@ -32,40 +29,40 @@ const WEEKLY_MESSAGES = [
 
 const dashboardModule = {
   init() {
-    this.updateDate();
+    this.updateGreeting();
     this.loadQuote();
-    document.getElementById('refreshQuote').addEventListener('click', () => this.loadQuote(true));
+    this.renderCustomQuotes();
+    this.loadWeeklyMessageEditor();
     this.refresh();
+    document.getElementById('refreshQuote')?.addEventListener('click', () => this.loadQuote(true));
   },
 
-  updateDate() {
+  updateGreeting() {
+    const h = new Date().getHours();
+    const greeting = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
+    document.querySelector('#section-dashboard .section-title').textContent = `${greeting}, love ✦`;
     const d = new Date();
-    const opts = { weekday:'long', month:'long', day:'numeric', year:'numeric' };
-    document.getElementById('dashboardDate').textContent = d.toLocaleDateString('en-US', opts);
-
-    // Update greeting based on time
-    const h = d.getHours();
-    let greeting = h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening';
-    const titleEl = document.querySelector('#section-dashboard .section-title');
-    if (titleEl) titleEl.textContent = `${greeting}, love ✦`;
+    document.getElementById('dashboardDate').textContent =
+      d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
   },
 
   loadQuote(forceNew = false) {
     const today = new Date().toDateString();
-    let saved = JSON.parse(localStorage.getItem('lumiere_daily_quote') || '{}');
+    const saved = JSON.parse(localStorage.getItem('lumiere_daily_quote') || '{}');
     if (!forceNew && saved.date === today) {
       document.getElementById('quoteText').textContent = saved.text;
       document.getElementById('quoteAuthor').textContent = '— ' + saved.author;
       return;
     }
-    const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+    const custom = JSON.parse(localStorage.getItem('lumiere_custom_quotes') || '[]');
+    const all = [...QUOTES, ...custom.map(q => ({ text: q.text, author: q.author || 'You' }))];
+    const q = all[Math.floor(Math.random() * all.length)];
     localStorage.setItem('lumiere_daily_quote', JSON.stringify({ date: today, text: q.text, author: q.author }));
     const textEl = document.getElementById('quoteText');
-    const authorEl = document.getElementById('quoteAuthor');
     textEl.style.opacity = '0';
     setTimeout(() => {
       textEl.textContent = q.text;
-      authorEl.textContent = '— ' + q.author;
+      document.getElementById('quoteAuthor').textContent = '— ' + q.author;
       textEl.style.transition = 'opacity 0.5s';
       textEl.style.opacity = '1';
     }, 200);
@@ -87,140 +84,159 @@ const dashboardModule = {
     const done = todayTasks.filter(t => t.completed).length;
     const total = todayTasks.length;
     document.getElementById('tasksCompletedStat').textContent = `${done} / ${total}`;
-    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-    document.getElementById('dailyProgressBar').style.width = pct + '%';
+    document.getElementById('dailyProgressBar').style.width = (total > 0 ? Math.round(done/total*100) : 0) + '%';
   },
 
   updateFocusProgress() {
     const today = new Date().toISOString().split('T')[0];
-    const focusData = JSON.parse(localStorage.getItem('lumiere_focus_log') || '[]');
-    const todayMinutes = focusData
-      .filter(s => s.date === today && s.mode === 'focus')
-      .reduce((sum, s) => sum + s.minutes, 0);
-    document.getElementById('focusTimeStat').textContent = `${todayMinutes} min`;
-    const goalMinutes = 120; // 2hr daily goal
-    const pct = Math.min(100, Math.round((todayMinutes / goalMinutes) * 100));
-    document.getElementById('focusProgressBar').style.width = pct + '%';
+    const log = JSON.parse(localStorage.getItem('lumiere_focus_log') || '[]');
+    const mins = log.filter(s => s.date === today && s.mode === 'focus').reduce((a,b) => a + b.minutes, 0);
+    document.getElementById('focusTimeStat').textContent = `${mins} min`;
+    document.getElementById('focusProgressBar').style.width = Math.min(100, Math.round(mins/120*100)) + '%';
   },
 
   updateWeeklyAchievements() {
     const now = new Date();
-    const weekStart = new Date(now);
-    weekStart.setDate(now.getDate() - now.getDay());
-    weekStart.setHours(0,0,0,0);
-
+    const ws = new Date(now); ws.setDate(now.getDate() - now.getDay()); ws.setHours(0,0,0,0);
     const tasks = JSON.parse(localStorage.getItem('lumiere_tasks') || '[]');
-    const weekTasks = tasks.filter(t => t.completed && t.completedAt && new Date(t.completedAt) >= weekStart).length;
-
+    const wt = tasks.filter(t => t.completed && t.completedAt && new Date(t.completedAt) >= ws).length;
     const journal = JSON.parse(localStorage.getItem('lumiere_journal') || '[]');
-    const weekJournal = journal.filter(e => new Date(e.date) >= weekStart).length;
-
-    const focusLog = JSON.parse(localStorage.getItem('lumiere_focus_log') || '[]');
-    const weekFocusMin = focusLog
-      .filter(s => new Date(s.date) >= weekStart && s.mode === 'focus')
-      .reduce((sum, s) => sum + s.minutes, 0);
-    const weekFocusHours = (weekFocusMin / 60).toFixed(1);
-
-    // Streak: count consecutive days with at least 1 completed task
-    const streak = this.calcStreak(tasks);
-
-    document.getElementById('weekTasks').textContent = weekTasks;
-    document.getElementById('weekJournal').textContent = weekJournal;
-    document.getElementById('weekFocus').textContent = weekFocusHours;
-    document.getElementById('weekStreak').textContent = streak;
+    const wj = journal.filter(e => new Date(e.date) >= ws).length;
+    const log = JSON.parse(localStorage.getItem('lumiere_focus_log') || '[]');
+    const wfh = (log.filter(s => new Date(s.date) >= ws && s.mode === 'focus').reduce((a,b) => a+b.minutes, 0) / 60).toFixed(1);
+    document.getElementById('weekTasks').textContent = wt;
+    document.getElementById('weekJournal').textContent = wj;
+    document.getElementById('weekFocus').textContent = wfh;
+    document.getElementById('weekStreak').textContent = this.calcStreak(tasks);
   },
 
   calcStreak(tasks) {
     const doneByDate = {};
-    tasks.filter(t => t.completed && t.completedAt).forEach(t => {
-      const d = t.completedAt.split('T')[0];
-      doneByDate[d] = true;
-    });
+    tasks.filter(t => t.completed && t.completedAt).forEach(t => { doneByDate[t.completedAt.split('T')[0]] = true; });
     let streak = 0;
     const d = new Date();
     while (true) {
       const key = d.toISOString().split('T')[0];
-      if (doneByDate[key]) { streak++; d.setDate(d.getDate() - 1); }
-      else break;
+      if (doneByDate[key]) { streak++; d.setDate(d.getDate()-1); } else break;
     }
     return streak;
   },
 
   updateWeeklyMotivation() {
-    const weekNum = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000));
-    const msg = WEEKLY_MESSAGES[weekNum % WEEKLY_MESSAGES.length];
+    const custom = localStorage.getItem('lumiere_weekly_message');
+    const msg = custom || WEEKLY_MSGS[Math.floor(Date.now()/(7*24*60*60*1000)) % WEEKLY_MSGS.length];
     document.getElementById('weeklyMotivation').textContent = msg;
   },
 
   updateInsights() {
     const container = document.getElementById('insightsList');
-    const now = new Date();
-    const weekStart = new Date(now); weekStart.setDate(now.getDate() - 7); weekStart.setHours(0,0,0,0);
-
+    if (!container) return;
+    const ws = new Date(); ws.setDate(ws.getDate()-7);
     const tasks = JSON.parse(localStorage.getItem('lumiere_tasks') || '[]');
-    const recentTasks = tasks.filter(t => new Date(t.date) >= weekStart);
-    const completed = recentTasks.filter(t => t.completed).length;
-    const total = recentTasks.length;
-
-    const focusLog = JSON.parse(localStorage.getItem('lumiere_focus_log') || '[]');
-    const weekFocusMin = focusLog.filter(s => new Date(s.date) >= weekStart && s.mode === 'focus').reduce((a,b) => a + b.minutes, 0);
-
+    const rt = tasks.filter(t => new Date(t.date) >= ws);
+    const done = rt.filter(t => t.completed).length;
+    const total = rt.length;
+    const log = JSON.parse(localStorage.getItem('lumiere_focus_log') || '[]');
+    const wfm = log.filter(s => new Date(s.date) >= ws && s.mode === 'focus').reduce((a,b) => a+b.minutes, 0);
     const journal = JSON.parse(localStorage.getItem('lumiere_journal') || '[]');
-    const weekJournal = journal.filter(e => new Date(e.date) >= weekStart);
-
+    const wj = journal.filter(e => new Date(e.date) >= ws);
     const insights = [];
-
     if (total === 0) {
-      insights.push({ type:'neutral', text: 'Start adding tasks to unlock your personal insights.' });
+      insights.push({ type:'neutral', text:'Start adding tasks to unlock your personal insights.' });
     } else {
-      const rate = Math.round((completed / total) * 100);
-      if (rate >= 80) insights.push({ type:'positive', text: `You completed ${rate}% of your tasks this week. You're crushing it. 🌸` });
-      else if (rate >= 50) insights.push({ type:'neutral', text: `You completed ${rate}% of tasks. Solid progress — keep the momentum going!` });
-      else insights.push({ type:'gentle', text: `You completed ${rate}% of tasks. Consider planning fewer, more focused tasks next week.` });
+      const rate = Math.round(done/total*100);
+      if (rate >= 80) insights.push({ type:'positive', text:`You completed ${rate}% of your tasks this week. You're crushing it. 🌸` });
+      else if (rate >= 50) insights.push({ type:'neutral', text:`You completed ${rate}% of tasks. Keep that momentum going!` });
+      else insights.push({ type:'gentle', text:`You completed ${rate}% of tasks. Consider planning fewer, more focused tasks next week.` });
     }
-
-    if (weekFocusMin >= 300) {
-      insights.push({ type:'positive', text: `You logged ${Math.round(weekFocusMin/60)} hours of deep focus this week. That's extraordinary dedication.` });
-    } else if (weekFocusMin > 0) {
-      insights.push({ type:'neutral', text: `You completed ${weekFocusMin} minutes of focused work. Keep building that habit.` });
-    }
-
-    if (weekJournal.length >= 5) {
-      insights.push({ type:'positive', text: 'You journaled almost every day this week. Your self-awareness is growing beautifully.' });
-    } else if (weekJournal.length >= 2) {
-      insights.push({ type:'neutral', text: 'You wrote ' + weekJournal.length + ' journal entries this week. Reflection is your superpower.' });
-    }
-
-    // Mood insight
-    const moods = weekJournal.map(e => e.mood).filter(Boolean);
+    if (wfm >= 300) insights.push({ type:'positive', text:`You logged ${Math.round(wfm/60)} hours of deep focus. Extraordinary dedication.` });
+    else if (wfm > 0) insights.push({ type:'neutral', text:`${wfm} minutes of focused work this week. Keep building that habit.` });
+    if (wj.length >= 5) insights.push({ type:'positive', text:'You journaled almost every day this week. Your self-awareness is growing beautifully.' });
+    else if (wj.length >= 2) insights.push({ type:'neutral', text:`${wj.length} journal entries this week. Reflection is your superpower.` });
+    const moods = wj.map(e => e.mood).filter(Boolean);
     if (moods.length >= 3) {
-      const moodCount = moods.reduce((a,b) => { a[b]=(a[b]||0)+1; return a; }, {});
-      const topMood = Object.entries(moodCount).sort((a,b)=>b[1]-a[1])[0][0];
-      const moodMsg = { happy:'joyful and optimistic', calm:'calm and grounded', motivated:'energized and focused', tired:'tired — remember to rest', stressed:'stressed — be gentle with yourself' };
-      if (moodMsg[topMood]) insights.push({ type:'gentle', text: `You felt mostly ${moodMsg[topMood]} this week. ${topMood === 'stressed' || topMood === 'tired' ? 'Your feelings are valid. 💜' : 'Keep nurturing that energy. ✨'}` });
+      const mc = moods.reduce((a,b) => { a[b]=(a[b]||0)+1; return a; }, {});
+      const top = Object.entries(mc).sort((a,b) => b[1]-a[1])[0][0];
+      const mm = { happy:'joyful', calm:'calm and grounded', motivated:'energized', tired:'tired — rest is needed', stressed:'stressed — be gentle with yourself' };
+      if (mm[top]) insights.push({ type:'gentle', text:`You felt mostly ${mm[top]} this week.` });
     }
-
-    container.innerHTML = insights.map(i => `
-      <div class="insight-item ${i.type}">
-        <span class="insight-icon">✦</span>
-        <span>${i.text}</span>
-      </div>`).join('') || '<div class="insight-item neutral"><span class="insight-icon">✦</span><span>Use the app for a week to see your personal insights.</span></div>';
+    container.innerHTML = insights.map(i => `<div class="insight-item ${i.type}"><span class="insight-icon">✦</span><span>${i.text}</span></div>`).join('') ||
+      '<div class="insight-item neutral"><span class="insight-icon">✦</span><span>Use the app for a week to see your personal insights.</span></div>';
   },
 
   updateDashboardTasks() {
     const today = new Date().toISOString().split('T')[0];
-    const tasks = JSON.parse(localStorage.getItem('lumiere_tasks') || '[]');
-    const todayTasks = tasks.filter(t => t.date === today).slice(0, 5);
+    const tasks = JSON.parse(localStorage.getItem('lumiere_tasks') || '[]').filter(t => t.date === today).slice(0,5);
     const container = document.getElementById('dashboardTasks');
-    if (!todayTasks.length) {
-      container.innerHTML = '<p class="empty-hint">No tasks for today — head to Planner to add some 🌿</p>';
+    if (!container) return;
+    if (!tasks.length) { container.innerHTML = '<p class="empty-hint">No tasks for today — head to Planner to add some 🌿</p>'; return; }
+    container.innerHTML = tasks.map(t => `
+      <div style="display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0;border-bottom:1px solid var(--border)">
+        <span style="color:${t.completed?'var(--sage)':'var(--accent)'};font-size:1rem">${t.completed?'✓':'○'}</span>
+        <span style="font-size:0.86rem;${t.completed?'text-decoration:line-through;opacity:0.5':''}">${t.title}</span>
+        <span class="task-cat-badge" style="margin-left:auto">${t.category||''}</span>
+      </div>`).join('');
+  },
+
+  // ── CUSTOM QUOTES ────────────────────────────────────────────
+  addCustomQuote() {
+    const text = document.getElementById('customQuoteText')?.value.trim();
+    if (!text) { showToast('Enter a quote first 🌸'); return; }
+    const author = document.getElementById('customQuoteAuthor')?.value.trim() || 'You';
+    const quotes = JSON.parse(localStorage.getItem('lumiere_custom_quotes') || '[]');
+    quotes.push({ id: Date.now().toString(), text, author });
+    localStorage.setItem('lumiere_custom_quotes', JSON.stringify(quotes));
+    document.getElementById('customQuoteText').value = '';
+    document.getElementById('customQuoteAuthor').value = '';
+    this.renderCustomQuotes();
+    showToast('Quote added ✦');
+  },
+
+  deleteCustomQuote(id) {
+    const quotes = JSON.parse(localStorage.getItem('lumiere_custom_quotes') || '[]').filter(q => q.id !== id);
+    localStorage.setItem('lumiere_custom_quotes', JSON.stringify(quotes));
+    this.renderCustomQuotes();
+    showToast('Quote removed');
+  },
+
+  renderCustomQuotes() {
+    const container = document.getElementById('customQuotesList');
+    if (!container) return;
+    const quotes = JSON.parse(localStorage.getItem('lumiere_custom_quotes') || '[]');
+    if (!quotes.length) {
+      container.innerHTML = '<p style="font-size:0.78rem;color:var(--text-3);padding:0.3rem 0">No custom quotes yet. Add your first one below!</p>';
       return;
     }
-    container.innerHTML = todayTasks.map(t => `
-      <div style="display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0;border-bottom:1px solid var(--border)">
-        <span style="color:${t.completed?'var(--sage)':'var(--accent)'}">${t.completed?'✓':'○'}</span>
-        <span style="font-size:0.86rem;${t.completed?'text-decoration:line-through;opacity:0.55':''}">${t.title}</span>
-        <span class="task-cat-badge" style="margin-left:auto">${t.category||'personal'}</span>
+    container.innerHTML = quotes.map(q => `
+      <div class="custom-quote-item">
+        <div style="flex:1;min-width:0">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:0.95rem;font-style:italic;color:var(--text)">"${q.text}"</div>
+          <div style="font-size:0.72rem;color:var(--text-3);margin-top:0.2rem">— ${q.author}</div>
+        </div>
+        <button onclick="dashboardModule.deleteCustomQuote('${q.id}')" title="Remove"
+          style="background:none;border:none;color:var(--text-3);cursor:pointer;font-size:1rem;padding:0.2rem;flex-shrink:0;line-height:1">×</button>
       </div>`).join('');
+  },
+
+  // ── WEEKLY MESSAGE ───────────────────────────────────────────
+  saveWeeklyMessage() {
+    const msg = document.getElementById('weeklyMessageInput')?.value.trim();
+    if (!msg) { showToast('Write a message first 🌸'); return; }
+    localStorage.setItem('lumiere_weekly_message', msg);
+    document.getElementById('weeklyMotivation').textContent = msg;
+    showToast('Weekly message saved ✦');
+  },
+
+  clearWeeklyMessage() {
+    localStorage.removeItem('lumiere_weekly_message');
+    if (document.getElementById('weeklyMessageInput')) document.getElementById('weeklyMessageInput').value = '';
+    this.updateWeeklyMotivation();
+    showToast('Reverted to auto message');
+  },
+
+  loadWeeklyMessageEditor() {
+    const saved = localStorage.getItem('lumiere_weekly_message');
+    const input = document.getElementById('weeklyMessageInput');
+    if (saved && input) input.value = saved;
   }
 };

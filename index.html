@@ -1,80 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lumière — Your Life Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body class="light-mode">
 
-  <!-- Ambient background blobs -->
   <div class="ambient-bg">
     <div class="blob blob-1"></div>
     <div class="blob blob-2"></div>
     <div class="blob blob-3"></div>
   </div>
 
-  <!-- Sidebar -->
+  <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
       <span class="logo-icon">✦</span>
       <span class="logo-text">Lumière</span>
     </div>
-
     <nav class="sidebar-nav">
-      <button class="nav-btn active" data-section="dashboard">
-        <span class="nav-icon">◈</span>
-        <span class="nav-label">Dashboard</span>
-      </button>
-      <button class="nav-btn" data-section="notes">
-        <span class="nav-icon">◇</span>
-        <span class="nav-label">Notes</span>
-      </button>
-      <button class="nav-btn" data-section="planner">
-        <span class="nav-icon">◻</span>
-        <span class="nav-label">Planner</span>
-      </button>
-      <button class="nav-btn" data-section="journal">
-        <span class="nav-icon">◯</span>
-        <span class="nav-label">Journal</span>
-      </button>
-      <button class="nav-btn" data-section="focus">
-        <span class="nav-icon">◉</span>
-        <span class="nav-label">Focus</span>
-      </button>
+      <button class="nav-btn active" data-section="dashboard"><span class="nav-icon">◈</span><span class="nav-label">Dashboard</span></button>
+      <button class="nav-btn" data-section="notes"><span class="nav-icon">◇</span><span class="nav-label">Notes</span></button>
+      <button class="nav-btn" data-section="planner"><span class="nav-icon">◻</span><span class="nav-label">Planner</span></button>
+      <button class="nav-btn" data-section="journal"><span class="nav-icon">◯</span><span class="nav-label">Journal</span></button>
+      <button class="nav-btn" data-section="focus"><span class="nav-icon">◉</span><span class="nav-label">Focus</span></button>
+      <button class="nav-btn" data-section="budget"><span class="nav-icon">◑</span><span class="nav-label">Budget</span></button>
+      <button class="nav-btn" data-section="learn"><span class="nav-icon">◐</span><span class="nav-label">Learn & Code</span></button>
     </nav>
-
     <div class="sidebar-footer">
-      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode">
-        <span class="theme-icon">☽</span>
-      </button>
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode"><span class="theme-icon">☽</span></button>
       <div class="sidebar-date" id="sidebarDate"></div>
     </div>
   </aside>
 
-  <!-- Mobile top bar -->
+  <!-- MOBILE TOP BAR -->
   <div class="mobile-topbar">
     <button class="hamburger" id="hamburger">☰</button>
     <span class="mobile-logo">✦ Lumière</span>
     <button class="theme-toggle-mobile" id="themeToggleMobile">☽</button>
   </div>
 
-  <!-- Main Content -->
   <main class="main-content" id="mainContent">
 
-    <!-- DASHBOARD SECTION -->
+    <!-- ══════════════════════════════════════════════════
+         DASHBOARD
+    ══════════════════════════════════════════════════ -->
     <section class="section active" id="section-dashboard">
       <div class="section-header">
         <h1 class="section-title">Good morning, love ✦</h1>
         <p class="section-subtitle" id="dashboardDate"></p>
       </div>
-
       <div class="dashboard-grid">
 
-        <!-- Quote card -->
         <div class="card quote-card">
           <div class="quote-ornament">"</div>
           <p class="quote-text" id="quoteText">Loading your daily inspiration...</p>
@@ -82,87 +63,77 @@
           <button class="btn-ghost refresh-quote" id="refreshQuote">New Quote ↻</button>
         </div>
 
-        <!-- Progress card -->
         <div class="card progress-card">
           <h3 class="card-title">Today's Progress</h3>
-          <div class="progress-stat">
-            <span class="stat-label">Tasks completed</span>
-            <span class="stat-value" id="tasksCompletedStat">0 / 0</span>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar" id="dailyProgressBar" style="width:0%"></div>
-          </div>
-          <div class="progress-stat" style="margin-top:1rem">
-            <span class="stat-label">Focus time today</span>
-            <span class="stat-value" id="focusTimeStat">0 min</span>
-          </div>
-          <div class="progress-bar-wrap">
-            <div class="progress-bar lavender-bar" id="focusProgressBar" style="width:0%"></div>
-          </div>
+          <div class="progress-stat"><span class="stat-label">Tasks completed</span><span class="stat-value" id="tasksCompletedStat">0 / 0</span></div>
+          <div class="progress-bar-wrap"><div class="progress-bar" id="dailyProgressBar" style="width:0%"></div></div>
+          <div class="progress-stat" style="margin-top:1rem"><span class="stat-label">Focus time today</span><span class="stat-value" id="focusTimeStat">0 min</span></div>
+          <div class="progress-bar-wrap"><div class="progress-bar lavender-bar" id="focusProgressBar" style="width:0%"></div></div>
         </div>
 
-        <!-- Weekly achievements -->
         <div class="card achievements-card">
           <h3 class="card-title">This Week ✨</h3>
-          <div class="achievements-grid" id="achievementsGrid">
-            <div class="achievement-item">
-              <span class="achievement-num" id="weekTasks">0</span>
-              <span class="achievement-label">Tasks Done</span>
-            </div>
-            <div class="achievement-item">
-              <span class="achievement-num" id="weekJournal">0</span>
-              <span class="achievement-label">Journal Entries</span>
-            </div>
-            <div class="achievement-item">
-              <span class="achievement-num" id="weekFocus">0</span>
-              <span class="achievement-label">Focus Hours</span>
-            </div>
-            <div class="achievement-item">
-              <span class="achievement-num" id="weekStreak">0</span>
-              <span class="achievement-label">Day Streak 🔥</span>
-            </div>
+          <div class="achievements-grid">
+            <div class="achievement-item"><span class="achievement-num" id="weekTasks">0</span><span class="achievement-label">Tasks Done</span></div>
+            <div class="achievement-item"><span class="achievement-num" id="weekJournal">0</span><span class="achievement-label">Journal Entries</span></div>
+            <div class="achievement-item"><span class="achievement-num" id="weekFocus">0</span><span class="achievement-label">Focus Hours</span></div>
+            <div class="achievement-item"><span class="achievement-num" id="weekStreak">0</span><span class="achievement-label">Day Streak 🔥</span></div>
           </div>
         </div>
 
-        <!-- Weekly motivation -->
         <div class="card motivation-card">
           <h3 class="card-title">Your Weekly Message 🌸</h3>
           <p class="motivation-text" id="weeklyMotivation">Keep showing up. Every small act of discipline is a love letter to your future self.</p>
         </div>
 
-        <!-- Weekly insights -->
         <div class="card insights-card">
           <h3 class="card-title">Gentle Insights 🪞</h3>
           <div id="insightsList" class="insights-list">
-            <div class="insight-item positive">
-              <span class="insight-icon">✦</span>
-              <span>Start tracking your week to see personal insights here.</span>
-            </div>
+            <div class="insight-item positive"><span class="insight-icon">✦</span><span>Start tracking your week to see personal insights here.</span></div>
           </div>
         </div>
 
-        <!-- Recent tasks preview -->
         <div class="card tasks-preview-card">
           <h3 class="card-title">Today's Tasks</h3>
-          <div id="dashboardTasks" class="dashboard-tasks-list">
-            <p class="empty-hint">No tasks for today — head to Planner to add some 🌿</p>
+          <div id="dashboardTasks" class="dashboard-tasks-list"><p class="empty-hint">No tasks for today — head to Planner to add some 🌿</p></div>
+          <button class="btn-soft" onclick="app.navigate('planner')" style="margin-top:0.8rem">Open Planner →</button>
+        </div>
+
+        <!-- Custom Quotes Editor -->
+        <div class="card customise-card">
+          <h3 class="card-title">My Quotes ✦</h3>
+          <p style="font-size:0.78rem;color:var(--text-3);margin-bottom:0.8rem">Add your own quotes — they join the daily rotation.</p>
+          <div id="customQuotesList" class="custom-quotes-list"></div>
+          <textarea class="custom-input" id="customQuoteText" rows="2" placeholder="Write your quote or mantra…"></textarea>
+          <input type="text" class="custom-input" id="customQuoteAuthor" placeholder="— Author (optional)" style="margin-top:0.4rem"/>
+          <button class="btn-primary" style="margin-top:0.6rem;width:100%" onclick="dashboardModule.addCustomQuote()">Add Quote ✦</button>
+        </div>
+
+        <!-- Weekly Message Editor -->
+        <div class="card customise-card">
+          <h3 class="card-title">Weekly Message 🌸</h3>
+          <p style="font-size:0.78rem;color:var(--text-3);margin-bottom:0.8rem">Write a personal message that appears on your dashboard every week.</p>
+          <textarea class="custom-input" id="weeklyMessageInput" rows="3" placeholder="Your personal weekly message…"></textarea>
+          <div style="display:flex;gap:0.5rem;margin-top:0.6rem">
+            <button class="btn-primary" style="flex:1" onclick="dashboardModule.saveWeeklyMessage()">Save ✦</button>
+            <button class="btn-ghost" onclick="dashboardModule.clearWeeklyMessage()">Reset</button>
           </div>
-          <button class="btn-soft" onclick="app.navigate('planner')">Open Planner →</button>
         </div>
 
       </div>
     </section>
 
-    <!-- NOTES SECTION -->
+    <!-- ══════════════════════════════════════════════════
+         NOTES
+    ══════════════════════════════════════════════════ -->
     <section class="section" id="section-notes">
       <div class="section-header">
         <h1 class="section-title">Notes ◇</h1>
         <div class="header-actions">
-          <input type="text" class="search-input" id="notesSearch" placeholder="Search notes…" />
+          <input type="text" class="search-input" id="notesSearch" placeholder="Search notes…"/>
           <button class="btn-primary" id="newNoteBtn">+ New Note</button>
         </div>
       </div>
-
       <div class="notes-layout">
         <div class="notes-sidebar">
           <div class="notes-filter">
@@ -181,7 +152,7 @@
           </div>
           <div class="note-editor-form hidden" id="noteEditorForm">
             <div class="note-editor-toolbar">
-              <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Note title…" />
+              <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Note title…"/>
               <div class="note-meta-row">
                 <select class="note-type-select" id="noteTypeSelect">
                   <option value="personal">Personal</option>
@@ -190,20 +161,20 @@
                   <option value="coding">Coding 💻</option>
                   <option value="ideas">Ideas</option>
                 </select>
-                <button class="pin-btn" id="notePinBtn" title="Pin note">📌</button>
+                <button class="pin-btn" id="notePinBtn">📌 Pin</button>
                 <button class="btn-ghost delete-btn" id="noteDeleteBtn">Delete</button>
                 <button class="btn-primary save-btn" id="noteSaveBtn">Save</button>
               </div>
             </div>
-            <!-- Regular editor -->
+            <!-- Rich text editor -->
             <div id="richEditorWrap">
               <div class="rich-toolbar">
-                <button onclick="execCmd('bold')" title="Bold"><b>B</b></button>
-                <button onclick="execCmd('italic')" title="Italic"><i>I</i></button>
-                <button onclick="execCmd('underline')" title="Underline"><u>U</u></button>
-                <button onclick="execCmd('insertUnorderedList')" title="List">≡</button>
-                <button onclick="execCmd('insertOrderedList')" title="Numbered">1.</button>
-                <button onclick="execCmd('formatBlock','h2')" title="Heading">H</button>
+                <button onclick="execCmd('bold')"><b>B</b></button>
+                <button onclick="execCmd('italic')"><i>I</i></button>
+                <button onclick="execCmd('underline')"><u>U</u></button>
+                <button onclick="execCmd('insertUnorderedList')">≡</button>
+                <button onclick="execCmd('insertOrderedList')">1.</button>
+                <button onclick="execCmd('formatBlock','h2')">H</button>
               </div>
               <div class="rich-editor" id="richEditor" contenteditable="true"></div>
             </div>
@@ -217,33 +188,44 @@
                   <option value="css">CSS</option>
                   <option value="other">Other</option>
                 </select>
-                <span class="code-hint">IDE Mode ✦</span>
+                <div style="display:flex;align-items:center;gap:0.6rem">
+                  <button class="run-btn" onclick="notesModule.runCode()">▶ Run</button>
+                  <span class="code-hint">IDE Mode ✦</span>
+                </div>
               </div>
               <textarea class="code-editor" id="codeEditor" placeholder="// Write your code here…" spellcheck="false"></textarea>
+              <div id="codeOutputWrap" class="code-output-wrap hidden">
+                <div class="code-output-bar">
+                  <span>Output</span>
+                  <button onclick="notesModule.clearOutput()" style="background:none;border:none;color:#8a7898;cursor:pointer;font-size:0.75rem">✕ Clear</button>
+                </div>
+                <div id="codeOutput" class="code-output"></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- PLANNER SECTION -->
+    <!-- ══════════════════════════════════════════════════
+         PLANNER
+    ══════════════════════════════════════════════════ -->
     <section class="section" id="section-planner">
       <div class="section-header">
         <h1 class="section-title">Planner ◻</h1>
         <div class="header-actions">
-          <div class="view-toggle">
+          <div style="display:flex;gap:0.3rem">
             <button class="view-btn active" data-view="day">Day</button>
             <button class="view-btn" data-view="week">Week</button>
           </div>
           <button class="btn-primary" id="newTaskBtn">+ Add Task</button>
         </div>
       </div>
-
-      <!-- Task Form Modal -->
+      <!-- Task Modal -->
       <div class="modal-overlay hidden" id="taskModal">
         <div class="modal-card">
           <h3 class="modal-title">New Task ✦</h3>
-          <input type="text" class="modal-input" id="taskTitleInput" placeholder="What do you need to do?" />
+          <input type="text" class="modal-input" id="taskTitleInput" placeholder="What do you need to do?"/>
           <div class="modal-row">
             <select class="modal-select" id="taskCategory">
               <option value="work">💼 Work</option>
@@ -252,13 +234,11 @@
               <option value="business">💡 Business</option>
               <option value="fun">🎉 Fun</option>
             </select>
-            <input type="date" class="modal-input" id="taskDate" />
+            <input type="date" class="modal-input" id="taskDate" style="margin-bottom:0"/>
           </div>
           <div class="modal-row">
-            <input type="time" class="modal-input" id="taskTime" placeholder="Time" />
-            <label class="reminder-label">
-              <input type="checkbox" id="taskReminder" /> Remind me
-            </label>
+            <input type="time" class="modal-input" id="taskTime" style="margin-bottom:0"/>
+            <label class="reminder-label"><input type="checkbox" id="taskReminder"/> Remind me</label>
           </div>
           <div class="modal-actions">
             <button class="btn-ghost" id="cancelTaskBtn">Cancel</button>
@@ -266,8 +246,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Day View -->
       <div id="dayView" class="planner-view">
         <div class="planner-day-header">
           <button class="nav-arrow" id="prevDay">‹</button>
@@ -283,86 +261,98 @@
         </div>
         <div class="tasks-list" id="dayTasksList"></div>
       </div>
-
-      <!-- Week View -->
       <div id="weekView" class="planner-view hidden">
         <div class="week-grid" id="weekGrid"></div>
       </div>
     </section>
 
-    <!-- JOURNAL SECTION -->
+    <!-- ══════════════════════════════════════════════════
+         JOURNAL
+    ══════════════════════════════════════════════════ -->
     <section class="section" id="section-journal">
       <div class="section-header">
         <h1 class="section-title">Journal ◯</h1>
         <div class="header-actions">
-          <input type="text" class="search-input" id="journalSearch" placeholder="Search entries…" />
-          <button class="view-btn active" id="journalWriteTab">Write</button>
-          <button class="view-btn" id="journalCalendarTab">Calendar</button>
-          <button class="view-btn" id="journalAnalysisTab">Analysis</button>
+          <input type="text" class="search-input" id="journalSearch" placeholder="Search entries…"/>
+          <input type="date" class="search-input" id="journalDatePicker" style="width:150px" title="Jump to date"/>
+          <button class="view-btn active" id="jTab-write">Write</button>
+          <button class="view-btn" id="jTab-calendar">Calendar</button>
+          <button class="view-btn" id="jTab-analysis">Analysis</button>
+          <button class="btn-primary" id="journalNewBtn" style="font-size:0.82rem;padding:0.4rem 0.9rem">+ New Entry</button>
         </div>
       </div>
 
-      <!-- Write tab -->
+      <!-- WRITE TAB -->
       <div id="journalWriteView">
-        <div class="journal-card">
-          <div class="journal-date-row">
-            <span class="journal-today-label" id="journalTodayLabel"></span>
-            <div class="mood-selector" id="moodSelector">
-              <span class="mood-label">How are you feeling?</span>
-              <div class="mood-options">
-                <button class="mood-btn" data-mood="happy" title="Happy">😊</button>
-                <button class="mood-btn" data-mood="calm" title="Calm">😌</button>
-                <button class="mood-btn" data-mood="motivated" title="Motivated">🔥</button>
-                <button class="mood-btn" data-mood="tired" title="Tired">😴</button>
-                <button class="mood-btn" data-mood="stressed" title="Stressed">😰</button>
+        <div class="journal-write-layout">
+
+          <!-- Left: entries list -->
+          <div class="journal-entries-panel">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.8rem">
+              <span style="font-size:0.75rem;font-weight:500;color:var(--text-3);letter-spacing:0.05em">PAST ENTRIES</span>
+              <button class="btn-primary" style="font-size:0.72rem;padding:0.28rem 0.7rem" onclick="journalModule.newToday()">+ New</button>
+            </div>
+            <div id="journalEntriesSidebar" class="journal-entries-sidebar">
+              <p style="font-size:0.78rem;color:var(--text-3)">No entries yet.</p>
+            </div>
+          </div>
+
+          <!-- Right: editor -->
+          <div class="journal-card">
+            <div class="journal-date-row">
+              <span class="journal-today-label" id="journalTodayLabel"></span>
+              <div class="mood-selector">
+                <span class="mood-label">Mood:</span>
+                <div class="mood-options">
+                  <button class="mood-btn" data-mood="happy" title="Happy">😊</button>
+                  <button class="mood-btn" data-mood="calm" title="Calm">😌</button>
+                  <button class="mood-btn" data-mood="motivated" title="Motivated">🔥</button>
+                  <button class="mood-btn" data-mood="tired" title="Tired">😴</button>
+                  <button class="mood-btn" data-mood="stressed" title="Stressed">😰</button>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div class="prompts-row">
-            <span class="prompts-label">Writing prompts:</span>
-            <div class="prompts-list">
-              <button class="prompt-chip" onclick="insertPrompt('What did I achieve today?')">What did I achieve today?</button>
-              <button class="prompt-chip" onclick="insertPrompt('What can I improve tomorrow?')">What can I improve?</button>
-              <button class="prompt-chip" onclick="insertPrompt('What made me proud this week?')">What made me proud?</button>
-              <button class="prompt-chip" onclick="insertPrompt('What am I grateful for today?')">Grateful for…</button>
+            <div class="prompts-row">
+              <span class="prompts-label">Prompts:</span>
+              <div class="prompts-list">
+                <button class="prompt-chip" onclick="insertPrompt('What did I achieve today?')">What did I achieve?</button>
+                <button class="prompt-chip" onclick="insertPrompt('What can I improve tomorrow?')">What to improve?</button>
+                <button class="prompt-chip" onclick="insertPrompt('What made me proud this week?')">Proud of…</button>
+                <button class="prompt-chip" onclick="insertPrompt('What am I grateful for today?')">Grateful for…</button>
+              </div>
+            </div>
+            <textarea class="journal-textarea" id="journalTextarea" placeholder="Begin writing… this space is only for you 🌸"></textarea>
+            <div class="journal-actions">
+              <span class="word-count" id="journalWordCount">0 words</span>
+              <button class="btn-primary" id="saveJournalBtn">Save Entry ✦</button>
             </div>
           </div>
 
-          <textarea class="journal-textarea" id="journalTextarea" placeholder="Begin writing… this space is only for you 🌸"></textarea>
-
-          <div class="journal-actions">
-            <span class="word-count" id="journalWordCount">0 words</span>
-            <button class="btn-primary" id="saveJournalBtn">Save Entry ✦</button>
-          </div>
         </div>
       </div>
 
-      <!-- Calendar tab -->
+      <!-- CALENDAR TAB -->
       <div id="journalCalendarView" class="hidden">
         <div class="journal-calendar" id="journalCalendar"></div>
         <div class="journal-entry-preview" id="journalEntryPreview">
-          <p class="empty-hint">Select a date to read your entry.</p>
+          <p class="empty-hint">Select a highlighted date to read your entry.</p>
         </div>
       </div>
 
-      <!-- Analysis tab -->
+      <!-- ANALYSIS TAB -->
       <div id="journalAnalysisView" class="hidden">
-        <div class="analysis-card" id="journalAnalysisCard">
+        <div class="analysis-card">
           <h3 class="card-title">Weekly Journal Analysis 🪞</h3>
-          <div id="analysisContent">
-            <p class="empty-hint">Write at least 3 journal entries to unlock your weekly analysis.</p>
-          </div>
+          <div id="analysisContent"><p class="empty-hint">Write at least 3 journal entries to unlock your weekly analysis.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- FOCUS SECTION -->
+    <!-- ══════════════════════════════════════════════════
+         FOCUS
+    ══════════════════════════════════════════════════ -->
     <section class="section" id="section-focus">
-      <div class="section-header">
-        <h1 class="section-title">Focus Mode ◉</h1>
-      </div>
-
+      <div class="section-header"><h1 class="section-title">Focus Mode ◉</h1></div>
       <div class="focus-layout">
         <div class="timer-card">
           <div class="timer-mode-tabs">
@@ -370,59 +360,36 @@
             <button class="timer-mode-btn" data-mode="fun">Fun</button>
             <button class="timer-mode-btn" data-mode="rest">Rest</button>
           </div>
-
           <div class="timer-display">
             <svg class="timer-ring" viewBox="0 0 200 200">
-              <circle class="ring-bg" cx="100" cy="100" r="88" />
-              <circle class="ring-progress" id="timerRingProgress" cx="100" cy="100" r="88" />
+              <circle class="ring-bg" cx="100" cy="100" r="88"/>
+              <circle class="ring-progress" id="timerRingProgress" cx="100" cy="100" r="88"/>
             </svg>
             <div class="timer-center">
               <span class="timer-time" id="timerDisplay">25:00</span>
               <span class="timer-label" id="timerModeLabel">Focus</span>
             </div>
           </div>
-
           <div class="timer-controls">
             <button class="timer-btn" id="timerStart">▶ Start</button>
             <button class="timer-btn secondary" id="timerReset">↺ Reset</button>
           </div>
-
           <div class="timer-settings">
-            <label class="timer-setting">
-              <span>Focus</span>
-              <input type="number" class="timer-input" id="focusDuration" value="25" min="1" max="120" /> min
-            </label>
-            <label class="timer-setting">
-              <span>Fun</span>
-              <input type="number" class="timer-input" id="funDuration" value="10" min="1" max="60" /> min
-            </label>
-            <label class="timer-setting">
-              <span>Rest</span>
-              <input type="number" class="timer-input" id="restDuration" value="5" min="1" max="30" /> min
-            </label>
+            <label class="timer-setting"><span>Focus</span><input type="number" class="timer-input" id="focusDuration" value="25" min="1" max="120"/> min</label>
+            <label class="timer-setting"><span>Fun</span><input type="number" class="timer-input" id="funDuration" value="10" min="1" max="60"/> min</label>
+            <label class="timer-setting"><span>Rest</span><input type="number" class="timer-input" id="restDuration" value="5" min="1" max="30"/> min</label>
           </div>
         </div>
-
         <div class="focus-stats-panel">
           <div class="card">
             <h3 class="card-title">Today's Focus</h3>
-            <div class="focus-stat-row">
-              <span>Sessions completed</span>
-              <span class="stat-value" id="focusSessionsCount">0</span>
-            </div>
-            <div class="focus-stat-row">
-              <span>Total focus time</span>
-              <span class="stat-value" id="focusTotalTime">0 min</span>
-            </div>
+            <div class="focus-stat-row"><span>Sessions completed</span><span class="stat-value" id="focusSessionsCount">0</span></div>
+            <div class="focus-stat-row"><span>Total focus time</span><span class="stat-value" id="focusTotalTime">0 min</span></div>
           </div>
-
           <div class="card">
             <h3 class="card-title">Session Log</h3>
-            <div class="session-log" id="sessionLog">
-              <p class="empty-hint">No sessions yet today.</p>
-            </div>
+            <div class="session-log" id="sessionLog"><p class="empty-hint">No sessions yet today.</p></div>
           </div>
-
           <div class="card focus-quote-card">
             <p class="focus-quote" id="focusQuote">"Do the work. The universe rewards action."</p>
           </div>
@@ -430,26 +397,264 @@
       </div>
     </section>
 
+    <!-- ══════════════════════════════════════════════════
+         BUDGET
+    ══════════════════════════════════════════════════ -->
+    <section class="section" id="section-budget">
+      <div class="section-header">
+        <h1 class="section-title">Budget ◑</h1>
+        <div class="header-actions">
+          <button class="nav-arrow" id="budgetPrevMonth">‹</button>
+          <span id="budgetMonthLabel" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text);min-width:140px;text-align:center"></span>
+          <button class="nav-arrow" id="budgetNextMonth">›</button>
+          <button class="btn-primary" id="addTransactionBtn">+ Add</button>
+        </div>
+      </div>
+
+      <!-- Budget tabs -->
+      <div style="display:flex;gap:0.4rem;margin-bottom:1.4rem">
+        <button class="budget-tab-btn view-btn active" data-tab="overview">Overview</button>
+        <button class="budget-tab-btn view-btn" data-tab="transactions">Transactions</button>
+        <button class="budget-tab-btn view-btn" data-tab="plan">Budget Plan</button>
+      </div>
+
+      <!-- OVERVIEW TAB -->
+      <div id="budgetOverviewTab">
+        <div class="budget-summary-cards">
+          <div class="card budget-summary-card income-card">
+            <div class="bsc-label">Income</div>
+            <div class="bsc-amount" id="budgetIncome">$0.00</div>
+          </div>
+          <div class="card budget-summary-card expense-card">
+            <div class="bsc-label">Expenses</div>
+            <div class="bsc-amount" id="budgetExpenses">$0.00</div>
+          </div>
+          <div class="card budget-summary-card">
+            <div class="bsc-label">Balance</div>
+            <div class="bsc-amount" id="budgetBalance">$0.00</div>
+          </div>
+          <div class="card budget-summary-card">
+            <div class="bsc-label">Savings Rate</div>
+            <div class="bsc-amount" id="savingsRate">0%</div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:1.2rem">
+          <h3 class="card-title">Spending by Category</h3>
+          <div id="budgetCategoryBreakdown"></div>
+        </div>
+      </div>
+
+      <!-- TRANSACTIONS TAB -->
+      <div id="budgetTransactionsTab" class="hidden">
+        <div class="card">
+          <h3 class="card-title">All Transactions</h3>
+          <div id="transactionsList"></div>
+        </div>
+      </div>
+
+      <!-- PLAN TAB -->
+      <div id="budgetPlanTab" class="hidden">
+        <div class="card" style="margin-bottom:1.2rem">
+          <h3 class="card-title">Set Category Budgets</h3>
+          <p style="font-size:0.82rem;color:var(--text-3);margin-bottom:1rem">Set monthly spending limits per category. You'll see progress bars and over-budget warnings.</p>
+          <div class="modal-row" style="flex-wrap:wrap;gap:0.6rem">
+            <select class="modal-select" id="budgetCategorySelect" style="flex:1;min-width:140px">
+              <option value="food">🍽 Food</option>
+              <option value="transport">🚌 Transport</option>
+              <option value="housing">🏠 Housing</option>
+              <option value="health">💊 Health</option>
+              <option value="shopping">🛍 Shopping</option>
+              <option value="entertainment">🎬 Entertainment</option>
+              <option value="education">📚 Education</option>
+              <option value="other">✦ Other</option>
+            </select>
+            <input type="number" class="modal-input" id="budgetLimitInput" placeholder="Monthly limit ($)" style="flex:1;min-width:140px;margin-bottom:0" min="1"/>
+            <button class="btn-primary" id="saveBudgetBtn" style="white-space:nowrap">Set Budget ✦</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">This Month's Progress</h3>
+          <div id="budgetPlanList"></div>
+        </div>
+      </div>
+
+      <!-- Transaction Modal -->
+      <div class="modal-overlay hidden" id="txModal">
+        <div class="modal-card">
+          <h3 class="modal-title">Add Transaction ✦</h3>
+          <input type="text" class="modal-input" id="txTitleInput" placeholder="Description (e.g. Grocery run)"/>
+          <div class="modal-row">
+            <div style="display:flex;align-items:center;gap:0.3rem;flex:1">
+              <span class="tx-currency-symbol" style="color:var(--text-3);font-size:0.9rem;flex-shrink:0">KSh</span>
+              <input type="number" class="modal-input" id="txAmount" placeholder="Amount" min="0" step="0.01" style="margin-bottom:0;flex:1"/>
+            </div>
+            <select class="modal-select" id="txType" style="color:#e06c75">
+              <option value="expense" style="color:#e06c75">Expense</option>
+              <option value="income" style="color:#6abf7b">Income</option>
+            </select>
+          </div>
+          <div class="modal-row">
+            <select class="modal-select" id="txCategory">
+              <option value="food">🍽 Food</option>
+              <option value="transport">🚌 Transport</option>
+              <option value="housing">🏠 Housing</option>
+              <option value="health">💊 Health</option>
+              <option value="shopping">🛍 Shopping</option>
+              <option value="entertainment">🎬 Entertainment</option>
+              <option value="education">📚 Education</option>
+              <option value="other">✦ Other</option>
+            </select>
+            <input type="date" class="modal-input" id="txDate" style="margin-bottom:0"/>
+          </div>
+          <input type="text" class="modal-input" id="txNote" placeholder="Note (optional)"/>
+          <div class="modal-actions">
+            <button class="btn-ghost" id="cancelTxBtn">Cancel</button>
+            <button class="btn-primary" id="saveTxBtn">Save ✦</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         LEARN & CODE
+    ══════════════════════════════════════════════════ -->
+    <section class="section" id="section-learn">
+      <div class="section-header">
+        <h1 class="section-title">Learn & Code ◐</h1>
+        <p class="section-subtitle">Interactive lessons with a live code editor</p>
+      </div>
+
+      <!-- TOPICS VIEW -->
+      <div id="learnTopicsView">
+        <div id="learnTopicsGrid" class="learn-topics-grid"></div>
+      </div>
+
+      <!-- LESSON VIEW -->
+      <div id="learnLessonView" class="hidden">
+        <div class="learn-lesson-header">
+          <button class="btn-ghost" style="font-size:0.8rem;padding:0.3rem 0.9rem" id="learnBackBtn">← Topics</button>
+          <span id="learnTopicBadge" style="font-size:0.82rem;font-weight:500"></span>
+          <h2 id="learnLessonTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--text);flex:1"></h2>
+          <button class="btn-primary hidden" id="learnNextBtn" style="font-size:0.82rem;padding:0.4rem 1rem">Next Lesson →</button>
+        </div>
+
+        <div class="learn-split">
+
+          <!-- LEFT: Theory + Challenge -->
+          <div class="learn-left">
+            <div class="learn-theory-card" id="learnTheory"></div>
+            <div class="learn-challenge-box" id="learnChallenge"></div>
+            <div class="learn-hint-box hidden" id="learnHintBox"></div>
+          </div>
+
+          <!-- RIGHT: Editor + Output -->
+          <div class="learn-right">
+
+            <!-- Editor panel -->
+            <div class="learn-editor-panel">
+              <div class="learn-editor-bar">
+                <span class="learn-lang-badge" id="learnLangBadge">JavaScript</span>
+                <span style="font-size:0.72rem;color:#8a7898">Ctrl+Enter to run</span>
+                <div style="display:flex;gap:0.4rem;margin-left:auto">
+                  <button class="learn-action-btn reset" id="learnResetBtn" title="Reset code">↺ Reset</button>
+                  <button class="learn-action-btn hint" id="learnHintBtn" title="Show hint">💡 Hint</button>
+                  <button class="learn-action-btn solve" id="learnSolveBtn" title="Show solution">✦ Solve</button>
+                  <button class="learn-run-btn" id="learnRunBtn">▶ Run</button>
+                </div>
+              </div>
+              <textarea class="learn-code-editor" id="learnCodeEditor" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
+            </div>
+
+            <!-- Output panel (JS/Python) -->
+            <div class="learn-output-panel" id="learnOutputPanel">
+              <div class="learn-output-bar">
+                <span>Output</span>
+                <button id="learnClearBtn" style="background:none;border:none;color:#8a7898;cursor:pointer;font-size:0.75rem">✕ Clear</button>
+              </div>
+              <div class="learn-output" id="learnOutput">
+                <span style="color:#666;font-size:0.85rem">Click ▶ Run to execute your code</span>
+              </div>
+            </div>
+
+            <!-- Preview panel (HTML) -->
+            <div class="learn-preview-panel" id="learnPreviewPanel" style="display:none">
+              <div class="learn-output-bar">
+                <span>Live Preview</span>
+                <button onclick="document.getElementById('learnPreviewPanel').style.display='none';document.getElementById('learnOutputPanel').style.display='flex';" style="background:none;border:none;color:#8a7898;cursor:pointer;font-size:0.75rem">Show Console</button>
+              </div>
+              <iframe id="learnHTMLPreview" style="width:100%;flex:1;border:none;background:white"></iframe>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Floating Quick Add -->
+    <!-- TOPIC MODAL -->
+    <div class="modal-overlay hidden" id="topicModal">
+      <div class="modal-card">
+        <h3 class="modal-title" id="topicModalTitle">New Topic ✦</h3>
+        <input type="text" class="modal-input" id="topicTitleInput" placeholder="Topic title (e.g. React Basics)"/>
+        <div class="modal-row">
+          <input type="text" class="modal-input" id="topicIconInput" placeholder="Icon emoji (e.g. ⚛)" style="margin-bottom:0;width:100px"/>
+          <input type="color" id="topicColorInput" value="#c8b4e8" style="width:48px;height:42px;border:1px solid var(--border);border-radius:8px;cursor:pointer;padding:2px"/>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-ghost" id="cancelTopicBtn">Cancel</button>
+          <button class="btn-primary" id="saveTopicBtn">Save Topic ✦</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LESSON MODAL -->
+    <div class="modal-overlay hidden" id="lessonModal" style="align-items:flex-start;padding-top:2rem;overflow-y:auto">
+      <div class="modal-card" style="width:640px;max-height:90vh;overflow-y:auto">
+        <h3 class="modal-title" id="lessonModalTitle">New Lesson ✦</h3>
+        <input type="text" class="modal-input" id="lessonTitleInput" placeholder="Lesson title"/>
+        <div class="modal-row">
+          <select class="modal-select" id="lessonLangInput">
+            <option value="javascript">JavaScript</option>
+            <option value="html">HTML/CSS</option>
+            <option value="python-sim">Python</option>
+          </select>
+        </div>
+        <label style="font-size:0.78rem;color:var(--text-3);display:block;margin-bottom:0.3rem">Theory (HTML allowed)</label>
+        <textarea class="modal-input" id="lessonTheoryInput" rows="4" placeholder="&lt;h2&gt;Lesson Title&lt;/h2&gt;&lt;p&gt;Explain the concept here...&lt;/p&gt;" style="font-family:monospace;font-size:0.82rem;resize:vertical"></textarea>
+        <label style="font-size:0.78rem;color:var(--text-3);display:block;margin-bottom:0.3rem">Starter Code</label>
+        <textarea class="modal-input" id="lessonStarterInput" rows="4" placeholder="// Starter code for student" style="font-family:monospace;font-size:0.82rem;resize:vertical"></textarea>
+        <label style="font-size:0.78rem;color:var(--text-3);display:block;margin-bottom:0.3rem">Challenge description</label>
+        <input type="text" class="modal-input" id="lessonChallengeInput" placeholder="What should the student do?"/>
+        <label style="font-size:0.78rem;color:var(--text-3);display:block;margin-bottom:0.3rem">Hint</label>
+        <input type="text" class="modal-input" id="lessonHintInput" placeholder="A gentle nudge…"/>
+        <label style="font-size:0.78rem;color:var(--text-3);display:block;margin-bottom:0.3rem">Solution code (optional)</label>
+        <textarea class="modal-input" id="lessonSolutionInput" rows="3" placeholder="// Solution code" style="font-family:monospace;font-size:0.82rem;resize:vertical"></textarea>
+        <div class="modal-actions">
+          <button class="btn-ghost" id="cancelLessonBtn">Cancel</button>
+          <button class="btn-primary" id="saveLessonBtn">Save Lesson ✦</button>
+        </div>
+      </div>
+    </div>
+
+  <!-- FAB -->
   <button class="fab" id="fabBtn" title="Quick add">+</button>
   <div class="fab-menu hidden" id="fabMenu">
     <button class="fab-item" onclick="app.quickAdd('task')">📋 Task</button>
     <button class="fab-item" onclick="app.quickAdd('note')">📝 Note</button>
     <button class="fab-item" onclick="app.quickAdd('journal')">📖 Journal</button>
+    <button class="fab-item" onclick="app.quickAdd('budget')">💸 Expense</button>
   </div>
 
-  <!-- Global Search Overlay -->
+  <!-- Global Search -->
   <div class="search-overlay hidden" id="searchOverlay">
     <div class="search-modal">
-      <input type="text" class="global-search-input" id="globalSearchInput" placeholder="Search everything… ✦" />
+      <input type="text" class="global-search-input" id="globalSearchInput" placeholder="Search everything… ✦"/>
       <div class="search-results" id="globalSearchResults"></div>
       <button class="close-search" id="closeSearch">✕</button>
     </div>
   </div>
 
-  <!-- Toast notification -->
   <div class="toast hidden" id="toast"></div>
 
   <script src="dashboard.js"></script>
@@ -457,6 +662,8 @@
   <script src="planner.js"></script>
   <script src="journal.js"></script>
   <script src="focus.js"></script>
+  <script src="budget.js"></script>
+  <script src="learn.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

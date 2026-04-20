@@ -1,11 +1,8 @@
 // ============================================================
-// LUMIÈRE — main.js
-// Navigation, global logic, search, theme, FAB
+// LUMIÈRE — main.js v4
 // ============================================================
 
 const app = {
-  currentSection: 'dashboard',
-
   init() {
     this.setupNav();
     this.setupTheme();
@@ -13,17 +10,20 @@ const app = {
     this.setupGlobalSearch();
     this.setupMobile();
     this.updateSidebarDate();
-    // Init all modules
     dashboardModule.init();
     notesModule.init();
     plannerModule.init();
     journalModule.init();
     focusModule.init();
-    // Keyboard shortcut: Ctrl+K = global search
+    budgetModule.init();
+    learnModule.init();
     document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-        e.preventDefault();
-        this.openGlobalSearch();
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); this.openGlobalSearch(); }
+      if (e.key === 'Escape') {
+        document.getElementById('searchOverlay').classList.add('hidden');
+        document.getElementById('taskModal').classList.add('hidden');
+        document.getElementById('txModal')?.classList.add('hidden');
+        document.getElementById('fabMenu').classList.add('hidden');
       }
     });
   },
@@ -31,17 +31,14 @@ const app = {
   navigate(section) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    const target = document.getElementById(`section-${section}`);
-    if (target) target.classList.add('active');
-    const btn = document.querySelector(`.nav-btn[data-section="${section}"]`);
-    if (btn) btn.classList.add('active');
-    this.currentSection = section;
-    // Close mobile sidebar
+    document.getElementById('section-' + section)?.classList.add('active');
+    document.querySelector('.nav-btn[data-section="' + section + '"]')?.classList.add('active');
     document.getElementById('sidebar').classList.remove('open');
-    // Refresh current module
     if (section === 'dashboard') dashboardModule.refresh();
     if (section === 'journal') journalModule.refresh();
     if (section === 'planner') plannerModule.refresh();
+    if (section === 'budget') budgetModule.render();
+    if (section === 'learn') learnModule.renderTopics();
   },
 
   setupNav() {
@@ -54,14 +51,14 @@ const app = {
     const saved = localStorage.getItem('lumiere_theme') || 'light';
     this.applyTheme(saved);
     document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
-    const mobile = document.getElementById('themeToggleMobile');
-    if (mobile) mobile.addEventListener('click', () => this.toggleTheme());
+    document.getElementById('themeToggleMobile')?.addEventListener('click', () => this.toggleTheme());
   },
 
   applyTheme(theme) {
     document.body.className = theme === 'dark' ? 'dark-mode' : 'light-mode';
-    const icons = document.querySelectorAll('.theme-icon, .theme-toggle-mobile');
-    icons.forEach(i => i.textContent = theme === 'dark' ? '☀' : '☽');
+    document.querySelectorAll('.theme-icon, .theme-toggle-mobile').forEach(i => {
+      i.textContent = theme === 'dark' ? '☀' : '☽';
+    });
   },
 
   toggleTheme() {
@@ -82,17 +79,17 @@ const app = {
 
   quickAdd(type) {
     document.getElementById('fabMenu').classList.add('hidden');
-    if (type === 'task') { this.navigate('planner'); setTimeout(() => plannerModule.openTaskModal(), 200); }
-    if (type === 'note') { this.navigate('notes'); setTimeout(() => notesModule.createNewNote(), 200); }
-    if (type === 'journal') { this.navigate('journal'); }
+    if (type === 'task')   { this.navigate('planner'); setTimeout(() => plannerModule.openTaskModal(), 200); }
+    if (type === 'note')   { this.navigate('notes'); setTimeout(() => notesModule.createNew(), 200); }
+    if (type === 'journal'){ this.navigate('journal'); setTimeout(() => journalModule.newToday(), 200); }
+    if (type === 'budget') { this.navigate('budget'); setTimeout(() => budgetModule.openTxModal(), 200); }
   },
 
   setupGlobalSearch() {
     const overlay = document.getElementById('searchOverlay');
-    const input = document.getElementById('globalSearchInput');
     document.getElementById('closeSearch').addEventListener('click', () => overlay.classList.add('hidden'));
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.add('hidden'); });
-    input.addEventListener('input', () => this.runGlobalSearch(input.value));
+    document.getElementById('globalSearchInput').addEventListener('input', e => this.runGlobalSearch(e.target.value));
   },
 
   openGlobalSearch() {
@@ -105,18 +102,18 @@ const app = {
     if (!q.trim()) { results.innerHTML = ''; return; }
     const lq = q.toLowerCase();
     let items = [];
-    // Notes
-    const notes = JSON.parse(localStorage.getItem('lumiere_notes') || '[]');
-    notes.filter(n => n.title.toLowerCase().includes(lq) || (n.content||'').toLowerCase().includes(lq))
-      .forEach(n => items.push({ type:'Note', title: n.title, section:'notes' }));
-    // Tasks
-    const tasks = JSON.parse(localStorage.getItem('lumiere_tasks') || '[]');
-    tasks.filter(t => t.title.toLowerCase().includes(lq))
-      .forEach(t => items.push({ type:'Task', title: t.title, section:'planner' }));
-    // Journal
-    const entries = JSON.parse(localStorage.getItem('lumiere_journal') || '[]');
-    entries.filter(e => (e.text||'').toLowerCase().includes(lq))
-      .forEach(e => items.push({ type:'Journal', title: e.date, section:'journal' }));
+    JSON.parse(localStorage.getItem('lumiere_notes') || '[]')
+      .filter(n => n.title.toLowerCase().includes(lq) || (n.content||'').toLowerCase().includes(lq))
+      .forEach(n => items.push({ type:'Note', title:n.title, section:'notes' }));
+    JSON.parse(localStorage.getItem('lumiere_tasks') || '[]')
+      .filter(t => t.title.toLowerCase().includes(lq))
+      .forEach(t => items.push({ type:'Task', title:t.title, section:'planner' }));
+    JSON.parse(localStorage.getItem('lumiere_journal') || '[]')
+      .filter(e => (e.text||'').toLowerCase().includes(lq))
+      .forEach(e => items.push({ type:'Journal', title:e.date, section:'journal' }));
+    JSON.parse(localStorage.getItem('lumiere_transactions') || '[]')
+      .filter(t => t.title.toLowerCase().includes(lq))
+      .forEach(t => items.push({ type:'Budget', title:t.title+' ($'+t.amount+')', section:'budget' }));
     results.innerHTML = items.length
       ? items.map(i => `<div class="search-result-item" onclick="app.navigate('${i.section}');document.getElementById('searchOverlay').classList.add('hidden')">
           <span class="result-type">${i.type}</span><span class="result-title">${i.title}</span></div>`).join('')
@@ -130,17 +127,17 @@ const app = {
   },
 
   updateSidebarDate() {
-    const el = document.getElementById('sidebarDate');
     const d = new Date();
-    el.textContent = d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    document.getElementById('sidebarDate').textContent = d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
   }
 };
 
-function showToast(msg, duration = 2500) {
+function showToast(msg, duration=2500) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.remove('hidden');
-  setTimeout(() => t.classList.add('hidden'), duration);
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.add('hidden'), duration);
 }
 
 function execCmd(cmd, val) {
@@ -150,8 +147,9 @@ function execCmd(cmd, val) {
 
 function insertPrompt(text) {
   const ta = document.getElementById('journalTextarea');
+  if (!ta) return;
   const prefix = ta.value ? '\n\n' : '';
-  ta.value += `${prefix}${text}\n`;
+  ta.value += prefix + text + '\n';
   ta.focus();
   ta.setSelectionRange(ta.value.length, ta.value.length);
   journalModule.updateWordCount();
