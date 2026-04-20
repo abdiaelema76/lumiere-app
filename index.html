@@ -30,6 +30,7 @@
       <button class="nav-btn" data-section="focus"><span class="nav-icon">◉</span><span class="nav-label">Focus</span></button>
       <button class="nav-btn" data-section="budget"><span class="nav-icon">◑</span><span class="nav-label">Budget</span></button>
       <button class="nav-btn" data-section="learn"><span class="nav-icon">◐</span><span class="nav-label">Learn & Code</span></button>
+      <button class="nav-btn" data-section="jobs"><span class="nav-icon">◫</span><span class="nav-label">Job Tracker</span></button>
     </nav>
     <div class="sidebar-footer">
       <button class="theme-toggle" id="themeToggle" title="Toggle dark mode"><span class="theme-icon">☽</span></button>
@@ -590,6 +591,82 @@
       </div>
     </section>
 
+
+    <!-- ══════════════════════════════════════════════════
+         JOB TRACKER
+    ══════════════════════════════════════════════════ -->
+    <section class="section" id="section-jobs">
+      <div class="section-header">
+        <h1 class="section-title">Job Tracker ◫</h1>
+        <div class="header-actions">
+          <input type="text" class="search-input" id="jobSearch" placeholder="Search jobs…"/>
+          <div style="display:flex;gap:0.3rem">
+            <button class="view-btn active" id="jobViewKanban">⊞ Board</button>
+            <button class="view-btn" id="jobViewList">☰ List</button>
+          </div>
+          <button class="btn-primary" id="addJobBtn">+ Add Job</button>
+        </div>
+      </div>
+
+      <!-- Stats bar -->
+      <div id="jobStats" class="job-stats-bar"></div>
+
+      <!-- Filter chips -->
+      <div class="filter-row" style="margin-bottom:1.4rem">
+        <button class="job-filter-btn filter-chip active" data-status="all">All</button>
+        <button class="job-filter-btn filter-chip" data-status="wishlist" style="--fc:#c8b4e8">⭐ Wishlist</button>
+        <button class="job-filter-btn filter-chip" data-status="applied" style="--fc:#87b8e8">📤 Applied</button>
+        <button class="job-filter-btn filter-chip" data-status="interviewing" style="--fc:#f5c842">💬 Interviewing</button>
+        <button class="job-filter-btn filter-chip" data-status="offer" style="--fc:#6abf7b">🎉 Offer</button>
+        <button class="job-filter-btn filter-chip" data-status="rejected" style="--fc:#e06c75">❌ Rejected</button>
+        <button class="job-filter-btn filter-chip" data-status="ghosted" style="--fc:#b09890">👻 Ghosted</button>
+      </div>
+
+      <!-- KANBAN VIEW -->
+      <div id="jobKanbanView">
+        <div id="jobKanbanBoard" class="kanban-board"></div>
+      </div>
+
+      <!-- LIST VIEW -->
+      <div id="jobListView" class="hidden">
+        <div class="card" style="overflow-x:auto">
+          <div id="jobListContainer"></div>
+        </div>
+      </div>
+
+      <!-- JOB MODAL -->
+      <div class="modal-overlay hidden" id="jobModal">
+        <div class="modal-card" style="width:500px">
+          <h3 class="modal-title" id="jobModalTitle">Add Job ✦</h3>
+          <div class="modal-row">
+            <input type="text" class="modal-input" id="jobRoleInput" placeholder="Job title / Role *" style="margin-bottom:0;flex:1"/>
+            <input type="text" class="modal-input" id="jobCompanyInput" placeholder="Company *" style="margin-bottom:0;flex:1"/>
+          </div>
+          <div class="modal-row" style="margin-top:0.8rem">
+            <select class="modal-select" id="jobStatusSelect">
+              <option value="wishlist">⭐ Wishlist</option>
+              <option value="applied">📤 Applied</option>
+              <option value="interviewing">💬 Interviewing</option>
+              <option value="offer">🎉 Offer</option>
+              <option value="rejected">❌ Rejected</option>
+              <option value="ghosted">👻 Ghosted</option>
+            </select>
+            <input type="date" class="modal-input" id="jobDateInput" style="margin-bottom:0;flex:1"/>
+          </div>
+          <div class="modal-row">
+            <input type="text" class="modal-input" id="jobLocationInput" placeholder="📍 Location" style="margin-bottom:0;flex:1"/>
+            <input type="text" class="modal-input" id="jobSalaryInput" placeholder="💰 Salary / Range" style="margin-bottom:0;flex:1"/>
+          </div>
+          <input type="url" class="modal-input" id="jobUrlInput" placeholder="🔗 Job URL (optional)"/>
+          <textarea class="modal-input" id="jobNotesInput" rows="3" placeholder="Notes (interview tips, contacts, requirements…)" style="resize:vertical"></textarea>
+          <div class="modal-actions">
+            <button class="btn-ghost" id="cancelJobBtn">Cancel</button>
+            <button class="btn-primary" id="saveJobBtn">Save ✦</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
 
     <!-- TOPIC MODAL -->
@@ -664,6 +741,7 @@
   <script src="focus.js"></script>
   <script src="budget.js"></script>
   <script src="learn.js"></script>
+  <script src="jobs.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
