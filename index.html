@@ -152,6 +152,7 @@
             <p>Select a note or create a new one</p>
           </div>
           <div class="note-editor-form hidden" id="noteEditorForm">
+            <!-- Top toolbar -->
             <div class="note-editor-toolbar">
               <input type="text" class="note-title-input" id="noteTitleInput" placeholder="Note title…"/>
               <div class="note-meta-row">
@@ -159,7 +160,6 @@
                   <option value="personal">Personal</option>
                   <option value="work">Work</option>
                   <option value="study">Study</option>
-                  <option value="coding">Coding 💻</option>
                   <option value="ideas">Ideas</option>
                 </select>
                 <button class="pin-btn" id="notePinBtn">📌 Pin</button>
@@ -167,42 +167,28 @@
                 <button class="btn-primary save-btn" id="noteSaveBtn">Save</button>
               </div>
             </div>
-            <!-- Rich text editor -->
-            <div id="richEditorWrap">
-              <div class="rich-toolbar">
-                <button onclick="execCmd('bold')"><b>B</b></button>
-                <button onclick="execCmd('italic')"><i>I</i></button>
-                <button onclick="execCmd('underline')"><u>U</u></button>
-                <button onclick="execCmd('insertUnorderedList')">≡</button>
-                <button onclick="execCmd('insertOrderedList')">1.</button>
-                <button onclick="execCmd('formatBlock','h2')">H</button>
+
+            <!-- Formatting + block toolbar -->
+            <div class="note-blocks-toolbar">
+              <div class="blocks-toolbar-group">
+                <span class="toolbar-group-label">Format</span>
+                <button class="ntb-btn" id="noteToolbarBold" title="Bold"><b>B</b></button>
+                <button class="ntb-btn" id="noteToolbarItalic" title="Italic"><i>I</i></button>
+                <button class="ntb-btn" id="noteToolbarUnderline" title="Underline"><u>U</u></button>
+                <button class="ntb-btn" id="noteToolbarUL" title="Bullet list">≡</button>
+                <button class="ntb-btn" id="noteToolbarOL" title="Numbered list">1.</button>
+                <button class="ntb-btn" id="noteToolbarH" title="Heading">H₂</button>
               </div>
-              <div class="rich-editor" id="richEditor" contenteditable="true"></div>
-            </div>
-            <!-- Code editor -->
-            <div id="codeEditorWrap" class="hidden">
-              <div class="code-lang-bar">
-                <select id="codeLang">
-                  <option value="javascript">JavaScript</option>
-                  <option value="python">Python</option>
-                  <option value="html">HTML</option>
-                  <option value="css">CSS</option>
-                  <option value="other">Other</option>
-                </select>
-                <div style="display:flex;align-items:center;gap:0.6rem">
-                  <button class="run-btn" onclick="notesModule.runCode()">▶ Run</button>
-                  <span class="code-hint">IDE Mode ✦</span>
-                </div>
-              </div>
-              <textarea class="code-editor" id="codeEditor" placeholder="// Write your code here…" spellcheck="false"></textarea>
-              <div id="codeOutputWrap" class="code-output-wrap hidden">
-                <div class="code-output-bar">
-                  <span>Output</span>
-                  <button onclick="notesModule.clearOutput()" style="background:none;border:none;color:#8a7898;cursor:pointer;font-size:0.75rem">✕ Clear</button>
-                </div>
-                <div id="codeOutput" class="code-output"></div>
+              <div class="blocks-toolbar-sep"></div>
+              <div class="blocks-toolbar-group">
+                <span class="toolbar-group-label">Insert</span>
+                <button class="ntb-btn insert-btn" id="noteToolbarText" title="Add text block">+ Text</button>
+                <button class="ntb-btn insert-btn code-insert-btn" id="noteToolbarCode" title="Add code block">⟨/⟩ Code Block</button>
               </div>
             </div>
+
+            <!-- Blocks container -->
+            <div class="note-blocks-container" id="noteBlocksContainer"></div>
           </div>
         </div>
       </div>
