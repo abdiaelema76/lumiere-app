@@ -399,10 +399,11 @@
       </div>
 
       <!-- Budget tabs -->
-      <div style="display:flex;gap:0.4rem;margin-bottom:1.4rem">
+      <div style="display:flex;gap:0.4rem;margin-bottom:1.4rem;flex-wrap:wrap">
         <button class="budget-tab-btn view-btn active" data-tab="overview">Overview</button>
         <button class="budget-tab-btn view-btn" data-tab="transactions">Transactions</button>
         <button class="budget-tab-btn view-btn" data-tab="plan">Budget Plan</button>
+        <button class="budget-tab-btn view-btn" data-tab="categories">Categories</button>
       </div>
 
       <!-- OVERVIEW TAB -->
@@ -462,6 +463,19 @@
         <div class="card">
           <h3 class="card-title">This Month's Progress</h3>
           <div id="budgetPlanList"></div>
+        </div>
+      </div>
+
+      <!-- Categories Tab -->
+      <div id="budgetCategoriesTab" class="hidden">
+        <div class="card" style="max-width:480px">
+          <h3 class="card-title">Custom Categories</h3>
+          <p style="font-size:0.82rem;color:var(--text-3);margin-bottom:1rem">Add your own spending categories alongside the built-in ones.</p>
+          <div class="modal-row" style="margin-bottom:0.8rem">
+            <input type="text" class="modal-input" id="newCatInput" placeholder="e.g. gym, subscriptions, pets…" style="margin-bottom:0;flex:1"/>
+            <button class="btn-primary" id="addCustomCatBtn" style="white-space:nowrap">Add ✦</button>
+          </div>
+          <div id="customCatList"></div>
         </div>
       </div>
 
@@ -586,37 +600,29 @@
         <h1 class="section-title">Job Tracker ◫</h1>
         <div class="header-actions">
           <input type="text" class="search-input" id="jobSearch" placeholder="Search jobs…"/>
-          <div style="display:flex;gap:0.3rem">
-            <button class="view-btn active" id="jobViewKanban">⊞ Board</button>
-            <button class="view-btn" id="jobViewList">☰ List</button>
-          </div>
+          <input type="text" class="search-input" id="jobSearch" placeholder="Search jobs…"/>
           <button class="btn-primary" id="addJobBtn">+ Add Job</button>
         </div>
       </div>
 
-      <!-- Stats bar -->
-      <div id="jobStats" class="job-stats-bar"></div>
 
-      <!-- Filter chips -->
-      <div class="filter-row" style="margin-bottom:1.4rem">
-        <button class="job-filter-btn filter-chip active" data-status="all">All</button>
-        <button class="job-filter-btn filter-chip" data-status="wishlist" style="--fc:#c8b4e8">⭐ Wishlist</button>
-        <button class="job-filter-btn filter-chip" data-status="applied" style="--fc:#87b8e8">📤 Applied</button>
-        <button class="job-filter-btn filter-chip" data-status="interviewing" style="--fc:#f5c842">💬 Interviewing</button>
-        <button class="job-filter-btn filter-chip" data-status="offer" style="--fc:#6abf7b">🎉 Offer</button>
-        <button class="job-filter-btn filter-chip" data-status="rejected" style="--fc:#e06c75">❌ Rejected</button>
-        <button class="job-filter-btn filter-chip" data-status="ghosted" style="--fc:#b09890">👻 Ghosted</button>
+
+      <!-- Pipeline bar -->
+      <div id="jobPipelineBar" class="job-pipeline-bar"></div>
+
+      <!-- SUMMARY VIEW: status tiles -->
+      <div id="jobSummaryView">
+        <div id="jobStatusGrid" class="job-status-grid"></div>
       </div>
 
-      <!-- KANBAN VIEW -->
-      <div id="jobKanbanView">
-        <div id="jobKanbanBoard" class="kanban-board"></div>
-      </div>
-
-      <!-- LIST VIEW -->
-      <div id="jobListView" class="hidden">
+      <!-- DRILL-DOWN VIEW: jobs for one status -->
+      <div id="jobDrillView" class="hidden">
+        <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.2rem;flex-wrap:wrap">
+          <button class="btn-ghost" id="jobDrillBack" style="font-size:0.82rem;padding:0.35rem 0.9rem">← Back</button>
+          <h2 id="jobDrillTitle" style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--text);display:flex;align-items:center;gap:0.5rem"></h2>
+        </div>
         <div class="card" style="overflow-x:auto">
-          <div id="jobListContainer"></div>
+          <div id="jobDrillList"></div>
         </div>
       </div>
 

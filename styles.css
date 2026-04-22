@@ -1,4 +1,4 @@
-/* ============================================================
+gi/* ============================================================
    LUMIÈRE — styles.css v3
    ============================================================ */
 
@@ -790,3 +790,95 @@ body.dark-mode .expense-card{background:linear-gradient(135deg,#2a1828,#3a1a28);
 .task-edit-btn:hover { color: var(--accent); background: var(--pink-soft); }
 /* Keep delete also visible on hover */
 .task-item:hover .task-delete-btn { opacity: 1; }
+
+/* ══════════════════════════════════════════════════════════════
+   GLOBAL SCROLL FIX — all sections scroll freely
+   ══════════════════════════════════════════════════════════════ */
+.main-content { overflow-y: auto; }
+.section { min-height: 0; }
+.note-editor-panel {
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  max-height: calc(100vh - 170px);
+}
+.note-blocks-container {
+  overflow-y: auto;
+  flex: 1;
+  max-height: none;
+}
+.notes-layout {
+  height: auto !important;
+  min-height: calc(100vh - 180px);
+}
+.notes-sidebar { overflow-y: auto; max-height: calc(100vh - 200px); }
+
+/* ══════════════════════════════════════════════════════════════
+   JOB TRACKER — summary + drill-down redesign
+   ══════════════════════════════════════════════════════════════ */
+
+/* Pipeline progress bar */
+.job-pipeline-bar { margin-bottom: 1.4rem; }
+.pipeline-stats {
+  display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 0.8rem;
+}
+.pipeline-stat { display: flex; flex-direction: column; align-items: center; }
+.ps-num { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:400; color:var(--text); line-height:1; }
+.ps-label { font-size:0.7rem; color:var(--text-3); margin-top:0.1rem; }
+.pipeline-track {
+  height: 10px; background: var(--border); border-radius: 99px;
+  overflow: hidden; display: flex;
+}
+.pt-seg { height: 100%; transition: width 0.5s ease; }
+
+/* Status grid */
+.job-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.job-status-tile {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.2rem 1.3rem;
+  cursor: pointer; transition: all 0.25s;
+  border-left: 4px solid var(--sc, var(--accent));
+}
+.job-status-tile:hover {
+  box-shadow: 0 6px 24px var(--shadow-2);
+  transform: translateY(-2px);
+  border-color: var(--sc, var(--accent));
+}
+.jst-header {
+  display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem;
+}
+.jst-icon { font-size: 1.5rem; flex-shrink: 0; }
+.jst-label { font-family:'Cormorant Garamond',serif; font-size: 1.1rem; font-weight: 500; }
+.jst-desc { font-size: 0.72rem; color: var(--text-3); margin-top: 0.1rem; }
+.jst-count {
+  margin-left: auto; font-family:'Cormorant Garamond',serif;
+  font-size: 1.8rem; font-weight: 400; padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-sm); min-width: 44px; text-align: center; flex-shrink: 0;
+}
+.jst-preview { border-top: 1px solid var(--border); padding-top: 0.6rem; }
+.jst-row {
+  display: flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0;
+  flex-wrap: wrap;
+}
+.jst-role { font-size: 0.82rem; font-weight: 500; color: var(--text); }
+.jst-company { font-size: 0.78rem; color: var(--text-2); }
+.jst-date { font-size: 0.7rem; color: var(--text-3); margin-left: auto; white-space: nowrap; }
+
+/* Drill-down table */
+.job-row-btn {
+  background: none; border: 1px solid var(--border);
+  color: var(--text-3); cursor: pointer; font-size: 0.8rem;
+  padding: 0.15rem 0.4rem; border-radius: 4px; margin-left: 0.2rem;
+  transition: all 0.15s;
+}
+.job-row-btn:hover { border-color: var(--accent); color: var(--text); background: var(--pink-soft); }
+.job-row-btn.danger:hover { border-color: #e06c75; color: #e06c75; background: #fde0e2; }
+
+@media(max-width:700px) {
+  .job-status-grid { grid-template-columns: 1fr; }
+  .pipeline-stats { gap: 0.8rem; }
+}
