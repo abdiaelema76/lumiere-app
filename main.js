@@ -18,6 +18,7 @@ const app = {
     budgetModule.init();
     learnModule.init();
     jobsModule.init();
+    interviewModule.init();
     document.addEventListener('keydown', e => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); this.openGlobalSearch(); }
       if (e.key === 'Escape') {
@@ -41,6 +42,7 @@ const app = {
     if (section === 'budget') budgetModule.render();
     if (section === 'learn') learnModule.renderTopics();
     if (section === 'jobs') jobsModule.render();
+    if (section === 'interview') interviewModule.renderTab(interviewModule.currentTab);
   },
 
   setupNav() {

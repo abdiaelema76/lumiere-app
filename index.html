@@ -31,6 +31,7 @@
       <button class="nav-btn" data-section="budget"><span class="nav-icon">◑</span><span class="nav-label">Budget</span></button>
       <button class="nav-btn" data-section="learn"><span class="nav-icon">◐</span><span class="nav-label">Learn & Code</span></button>
       <button class="nav-btn" data-section="jobs"><span class="nav-icon">◫</span><span class="nav-label">Job Tracker</span></button>
+      <button class="nav-btn" data-section="interview"><span class="nav-icon">◪</span><span class="nav-label">Interview Prep</span></button>
     </nav>
     <div class="sidebar-footer">
       <button class="theme-toggle" id="themeToggle" title="Toggle dark mode"><span class="theme-icon">☽</span></button>
@@ -659,6 +660,30 @@
       </div>
     </section>
 
+
+    <!-- ══════════════════════════════════════════════════
+         INTERVIEW PREP
+    ══════════════════════════════════════════════════ -->
+    <section class="section" id="section-interview">
+      <div class="section-header">
+        <h1 class="section-title">Interview Prep ◪</h1>
+        <div class="header-actions">
+          <button class="btn-primary" id="ipAddEntryBtn">+ Problem</button>
+        </div>
+      </div>
+
+      <!-- Category tabs -->
+      <div class="ip-tabs">
+        <button class="ip-tab-btn active" data-tab="coding">💻 Coding</button>
+        <button class="ip-tab-btn" data-tab="behavioral">💬 Behavioral</button>
+        <button class="ip-tab-btn" data-tab="sysdesign">🏗 System Design</button>
+        <button class="ip-tab-btn" data-tab="general">📝 General Notes</button>
+      </div>
+
+      <!-- Content area rendered by JS -->
+      <div id="ipContent" class="ip-content"></div>
+    </section>
+
   </main>
 
     <!-- TOPIC MODAL -->
@@ -734,6 +759,7 @@
   <script src="budget.js"></script>
   <script src="learn.js"></script>
   <script src="jobs.js"></script>
+  <script src="interview.js"></script>
   <script src="main.js"></script>
 </body>
 </html>
