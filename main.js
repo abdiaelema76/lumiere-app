@@ -1,8 +1,9 @@
 // ============================================================
-// LUMIÈRE — main.js v4
+// LUMIÈRE — main.js  (complete, clean version)
 // ============================================================
 
 const app = {
+
   init() {
     this.setupNav();
     this.setupTheme();
@@ -19,8 +20,13 @@ const app = {
     learnModule.init();
     jobsModule.init();
     interviewModule.init();
+    seventyFiveModule.init();
+
     document.addEventListener('keydown', e => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); this.openGlobalSearch(); }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        this.openGlobalSearch();
+      }
       if (e.key === 'Escape') {
         document.getElementById('searchOverlay').classList.add('hidden');
         document.getElementById('taskModal').classList.add('hidden');
@@ -34,15 +40,18 @@ const app = {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('section-' + section)?.classList.add('active');
-    document.querySelector('.nav-btn[data-section="' + section + '"]')?.classList.add('active');
+    document.querySelector(`.nav-btn[data-section="${section}"]`)?.classList.add('active');
     document.getElementById('sidebar').classList.remove('open');
-    if (section === 'dashboard') dashboardModule.refresh();
-    if (section === 'journal') journalModule.refresh();
-    if (section === 'planner') plannerModule.refresh();
-    if (section === 'budget') budgetModule.render();
-    if (section === 'learn') learnModule.renderTopics();
-    if (section === 'jobs') jobsModule.render();
-    if (section === 'interview') interviewModule.renderTab(interviewModule.currentTab);
+
+    if (section === 'dashboard')   dashboardModule.refresh();
+    if (section === 'journal')     journalModule.refresh();
+    if (section === 'planner')     plannerModule.refresh();
+    if (section === 'budget')      budgetModule.render();
+    if (section === 'learn')       learnModule.renderTopics();
+    if (section === 'jobs')        jobsModule.render();
+    if (section === 'interview')   interviewModule.renderTab(interviewModule.currentTab);
+    if (section === 'seventyfive') seventyFiveModule.render();
+    if (section === 'content')     contentModule.render();
   },
 
   setupNav() {
@@ -73,7 +82,7 @@ const app = {
   },
 
   setupFAB() {
-    const fab = document.getElementById('fabBtn');
+    const fab  = document.getElementById('fabBtn');
     const menu = document.getElementById('fabMenu');
     fab.addEventListener('click', () => menu.classList.toggle('hidden'));
     document.addEventListener('click', e => {
@@ -83,10 +92,10 @@ const app = {
 
   quickAdd(type) {
     document.getElementById('fabMenu').classList.add('hidden');
-    if (type === 'task')   { this.navigate('planner'); setTimeout(() => plannerModule.openTaskModal(), 200); }
-    if (type === 'note')   { this.navigate('notes'); setTimeout(() => notesModule.createNew(), 200); }
-    if (type === 'journal'){ this.navigate('journal'); setTimeout(() => journalModule.newToday(), 200); }
-    if (type === 'budget') { this.navigate('budget'); setTimeout(() => budgetModule.openTxModal(), 200); }
+    if (type === 'task')    { this.navigate('planner');  setTimeout(() => plannerModule.openTaskModal(), 200); }
+    if (type === 'note')    { this.navigate('notes');    setTimeout(() => notesModule.createNew(), 200); }
+    if (type === 'journal') { this.navigate('journal');  setTimeout(() => journalModule.newToday(), 200); }
+    if (type === 'budget')  { this.navigate('budget');   setTimeout(() => budgetModule.openTxModal(), 200); }
   },
 
   setupGlobalSearch() {
@@ -105,22 +114,30 @@ const app = {
     const results = document.getElementById('globalSearchResults');
     if (!q.trim()) { results.innerHTML = ''; return; }
     const lq = q.toLowerCase();
-    let items = [];
+    const items = [];
+
     JSON.parse(localStorage.getItem('lumiere_notes') || '[]')
-      .filter(n => n.title.toLowerCase().includes(lq) || (n.content||'').toLowerCase().includes(lq))
-      .forEach(n => items.push({ type:'Note', title:n.title, section:'notes' }));
+      .filter(n => n.title.toLowerCase().includes(lq) || (n.content || '').toLowerCase().includes(lq))
+      .forEach(n => items.push({ type: 'Note', title: n.title, section: 'notes' }));
+
     JSON.parse(localStorage.getItem('lumiere_tasks') || '[]')
       .filter(t => t.title.toLowerCase().includes(lq))
-      .forEach(t => items.push({ type:'Task', title:t.title, section:'planner' }));
+      .forEach(t => items.push({ type: 'Task', title: t.title, section: 'planner' }));
+
     JSON.parse(localStorage.getItem('lumiere_journal') || '[]')
-      .filter(e => (e.text||'').toLowerCase().includes(lq))
-      .forEach(e => items.push({ type:'Journal', title:e.date, section:'journal' }));
+      .filter(e => (e.text || '').toLowerCase().includes(lq))
+      .forEach(e => items.push({ type: 'Journal', title: e.date, section: 'journal' }));
+
     JSON.parse(localStorage.getItem('lumiere_transactions') || '[]')
       .filter(t => t.title.toLowerCase().includes(lq))
-      .forEach(t => items.push({ type:'Budget', title:t.title+' ($'+t.amount+')', section:'budget' }));
+      .forEach(t => items.push({ type: 'Budget', title: `${t.title} ($${t.amount})`, section: 'budget' }));
+
     results.innerHTML = items.length
-      ? items.map(i => `<div class="search-result-item" onclick="app.navigate('${i.section}');document.getElementById('searchOverlay').classList.add('hidden')">
-          <span class="result-type">${i.type}</span><span class="result-title">${i.title}</span></div>`).join('')
+      ? items.map(i => `
+          <div class="search-result-item" onclick="app.navigate('${i.section}');document.getElementById('searchOverlay').classList.add('hidden')">
+            <span class="result-type">${i.type}</span>
+            <span class="result-title">${i.title}</span>
+          </div>`).join('')
       : '<p class="empty-hint">No results found.</p>';
   },
 
@@ -132,21 +149,26 @@ const app = {
 
   updateSidebarDate() {
     const d = new Date();
-    document.getElementById('sidebarDate').textContent = d.toLocaleDateString('en-US', { month:'short', day:'numeric' });
+    document.getElementById('sidebarDate').textContent =
+      d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  },
+
+  showToast(msg, duration = 2500) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.remove('hidden');
+    clearTimeout(t._timer);
+    t._timer = setTimeout(() => t.classList.add('hidden'), duration);
   }
+
 };
 
-function showToast(msg, duration=2500) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.remove('hidden');
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => t.classList.add('hidden'), duration);
-}
+// Global helpers used by inline HTML handlers
+function showToast(msg, duration) { app.showToast(msg, duration); }
 
 function execCmd(cmd, val) {
   document.execCommand(cmd, false, val || null);
-  document.getElementById('richEditor').focus();
+  document.getElementById('richEditor')?.focus();
 }
 
 function insertPrompt(text) {
